@@ -4,6 +4,7 @@ from ..iwidget.IWidget import IWidget
 from ..iwidget.IAttacher import IAttacher
 from ..iwidget.IRenderable import IRenderable
 
+from .Widget import Widget
 from .Initializable import Initializable
 
 from .universal.Parented import Parented
@@ -28,6 +29,7 @@ class Container(
 
     _renderables: list[IRenderable]
     _attachers: list[IAttacher]
+    _widgets: list[IWidget]
 
     @overload
     def __init__(self, x: int, y: int, width: int, height: int, /):
@@ -61,6 +63,7 @@ class Container(
 
         self._renderables = []
         self._attachers = []
+        self._widgets = []
 
     ##########################
     ## SUB PENDING RENDERER ##
@@ -139,4 +142,53 @@ class Container(
         self.addRenderable(widget)
         self.addAttacher(widget)
 
+        self._widgets.append(widget)
+
         widget.parent = self
+
+    ##############
+    ## CHILDREN ##
+    ##############
+
+    def clear(self) -> None:
+        self._renderables = []
+        self._attachers = []
+        self._widgets = []
+
+    def getText(self) -> str:
+        return self.text
+
+    ##########
+    ## TEXT ##
+    ##########
+
+    @property
+    def text(self) -> str:
+        value = ""
+
+        for el in self._widgets:
+            value += el.getText()
+
+        return value
+
+    @text.setter
+    def text(self, args: tuple[str, pygame.color.Color | tuple[int, int, int] | tuple[int, int, int, int] | int, pygame.font.Font]) -> None:
+        value, color, font = args
+
+        class text_widget(Widget):
+            __parent = self
+
+            def __init__(self):
+                size = font.size(value)
+                super().__init__(
+                    (int) ((self.__parent.width - size[0])/2),
+                    (int) ((self.__parent.height - size[1]) / 2),
+                    *size
+                )
+
+            def renderWidget(self, surface: pygame.Surface) -> None:
+                texture = font.render(value, True, color)
+                surface.blit(texture, self.get_rect())
+
+        self.clear()
+        self.addREWidget(text_widget())

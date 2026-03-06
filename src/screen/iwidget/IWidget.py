@@ -21,3 +21,6 @@ class IWidget(IAttacher, IRenderable, Protocol[*Args]):
             *args: *Args
     ) -> None:
         ...
+
+    def getText(self) -> str:
+        ...

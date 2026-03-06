@@ -75,6 +75,9 @@ class Widget(
     def renderWidget(self, surface: pygame.Surface) -> None:
         ...
 
+    def getText(self) -> str:
+        return ""
+
     #############
     ## BUILDER ##
     #############
