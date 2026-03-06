@@ -1,7 +1,7 @@
 from typing import Generic, TypeVar, Self, Any
-from .AWidget import AWidget
+from ...iwidget.IWidget import IWidget
 
-T = TypeVar('T', bound="AWidget", covariant=True)
+T = TypeVar('T', bound="IWidget", covariant=True)
 
 class WidgetBuilder(Generic[T]):
     _cls: type[T]

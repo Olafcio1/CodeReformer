@@ -4,6 +4,10 @@ from .Attacher import Attacher
 from .Initializable import Initializable
 
 from .builder.WidgetBuilder import WidgetBuilder
+
+from .universal.Parented import Parented
+from .universal.Represented import Represented
+
 from ..iwidget.IWidget import IWidget
 
 from abc import ABCMeta, abstractmethod
@@ -11,6 +15,7 @@ from typing import final, Self
 
 class Widget(
         Attacher, Initializable,
+        Parented, Represented,
         IWidget,
         metaclass=ABCMeta
 ):
@@ -28,6 +33,7 @@ class Widget(
         self.height = height
 
         Attacher.__init__(self)
+        Parented.__init__(self)
         Initializable.__init__(self)
 
     #############

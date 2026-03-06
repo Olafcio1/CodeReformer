@@ -6,6 +6,9 @@ from ..iwidget.IRenderable import IRenderable
 
 from .Initializable import Initializable
 
+from .universal.Parented import Parented
+from .universal.Represented import Represented
+
 from .composition.style.Styleable import Styleable
 
 from abc import ABCMeta
@@ -13,6 +16,7 @@ from typing import final, overload
 
 class Container(
         Initializable, Styleable,
+        Parented, Represented,
         IWidget,
         metaclass=ABCMeta
 ):
@@ -36,6 +40,7 @@ class Container(
     def __init__(self, *params):
         Initializable.__init__(self)
         Styleable.__init__(self)
+        Parented.__init__(self)
 
         if len(params) == 4:
             x, y, width, height = params
@@ -133,3 +138,5 @@ class Container(
     def addREWidget(self, widget: IWidget) -> None:
         self.addRenderable(widget)
         self.addAttacher(widget)
+
+        widget.parent = self
