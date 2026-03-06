@@ -45,7 +45,10 @@ class HomeScreen(Screen):
             self.onClick = onClick
 
         def renderClipped(self, surface: pygame.Surface) -> None:
-            # 2a, 2f
+            # opera-gx style colors: #2c2a2a, #2f2d2d
+            # think of making an opera like theme for this.
+            # however, would a red IDE look good?
+            # an orange one does (imo) - i use `Bearded Theme Coffee` for `VS Code`
 
             surface.fill(0x2a2a2a, (0, 0, self.width, (int) (self.height / 2)))
             surface.fill(0x2d2d2d, (0, (int) (self.height / 2), self.width, (int) (self.height / 2)))
