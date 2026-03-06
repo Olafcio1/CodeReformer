@@ -1,7 +1,7 @@
 from abc import ABCMeta
 from typing import Literal, Self, overload
 
-Display = Literal["non-managed", "grid"]
+Display = Literal["non-managed", "grid", "flex"]
 
 class StDisplay(metaclass=ABCMeta):
     _display: Display = "non-managed"

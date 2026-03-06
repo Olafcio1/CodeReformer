@@ -20,16 +20,30 @@ class Styleable(IContainer):
             pass
         elif self.style._display == "grid":
             prev: Widget|None = None
-            y = 0
+            x = 0
 
             for element in self._renderables:
                 if isinstance(element, Widget):
                     if prev != None:
-                        y += prev.height
-                        y += self.style._gap
+                        x += prev.height
+                        x += self.style._gapVertical
 
                     element.x = 0
-                    element.y = y
+                    element.y = x
+
+                    prev = element
+        elif self.style._display == "flex":
+            prev: Widget|None = None
+            x = 0
+
+            for element in self._renderables:
+                if isinstance(element, Widget):
+                    if prev != None:
+                        x += prev.width
+                        x += self.style._gapHorizontal
+
+                    element.x = x
+                    element.y = 0
 
                     prev = element
         else:
