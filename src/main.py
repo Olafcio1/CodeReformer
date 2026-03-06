@@ -6,6 +6,8 @@ from .resources import ResourceManager
 from .screen.Screen import Screen
 from .home.HomeScreen import HomeScreen
 
+from .static.StaticRendering import StaticRendering
+
 class Rendering:
     surface: pygame.Surface
     screen: Screen
@@ -14,6 +16,12 @@ class Rendering:
         self.setup_window()
 
         ResourceManager.loadBuiltin()
+
+        def setter(value):
+            self.screen = value
+
+        StaticRendering.getScreen = lambda: self.screen
+        StaticRendering.setScreen = setter
 
         self.surface = pygame.display.get_surface()
         self.screen = HomeScreen()
