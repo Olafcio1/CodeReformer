@@ -8,7 +8,7 @@ from abc import ABCMeta
 from typing import Generic
 
 class Style(
-        Backable,
+        Backable[T],
         Generic[T],
 
         StPadding,
