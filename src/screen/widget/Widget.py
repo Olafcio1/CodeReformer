@@ -27,8 +27,8 @@ class Widget(
         self.width = width
         self.height = height
 
-        super(Attacher, self).__init__()
-        super(Initializable, self).__init__()
+        Attacher.__init__(self)
+        Initializable.__init__(self)
 
     #############
     ## GETTERS ##

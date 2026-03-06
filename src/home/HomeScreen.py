@@ -73,11 +73,19 @@ class HomeScreen(Screen):
             (int) (self.height/7 + 403/4.4 - 1),
             (int) (1024/4.4),
             (int) (100)
-        ))
+        ).style
+            .display("grid")
+            .gap(8)
+            .paddingTop(8)
+         .back)
 
         btns.addREWidget(HomeScreen.Button.Builder()
                                         .kw(text="New Project", onClick=self.newProject)
-                                        .pos(0, 12)
+                                        .size((int) (1024/4.4), 24)
+                                   .build())
+
+        btns.addREWidget(HomeScreen.Button.Builder()
+                                        .kw(text="Open Project", onClick=self.newProject)
                                         .size((int) (1024/4.4), 24)
                                    .build())
 

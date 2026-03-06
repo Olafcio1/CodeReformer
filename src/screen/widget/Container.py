@@ -6,10 +6,16 @@ from ..iwidget.IRenderable import IRenderable
 
 from .Initializable import Initializable
 
+from .composition.style.Styleable import Styleable
+
 from abc import ABCMeta
 from typing import final, overload
 
-class Container(Initializable, IWidget, metaclass=ABCMeta):
+class Container(
+        Initializable, Styleable,
+        IWidget,
+        metaclass=ABCMeta
+):
     x: int
     y: int
 
@@ -28,7 +34,8 @@ class Container(Initializable, IWidget, metaclass=ABCMeta):
         ...
 
     def __init__(self, *params):
-        super().__init__()
+        Initializable.__init__(self)
+        Styleable.__init__(self)
 
         if len(params) == 4:
             x, y, width, height = params
@@ -67,9 +74,12 @@ class Container(Initializable, IWidget, metaclass=ABCMeta):
 
     def render(self, surface: pygame.Surface) -> None:
         super().render(surface)
+        super().applyPre(surface)
 
         for widget in self._renderables:
             widget.render(surface.subsurface(self.x, self.y, self.width, self.height))
+
+        super().applyPost(surface)
 
     def renderChanged(self, surface: pygame.Surface) -> None:
         if self.pendingRerender():

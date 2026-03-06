@@ -14,8 +14,11 @@ class WidgetBuilder(Generic[T]):
 
     def __init__(self, cls: type[T]):
         self._cls = cls
+
         self._args = ()
         self._kwargs = {}
+
+        self._pos = (-1, -1)
 
     def args(self, *args) -> Self:
         self._args = args
