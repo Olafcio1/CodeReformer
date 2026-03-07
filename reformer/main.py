@@ -2,6 +2,7 @@ import pygame_ns as _
 import pygame
 
 from .resources import ResourceManager
+from .plugin import PluginScanner
 
 from .lib.screen.Screen import Screen
 from .lib.static.StaticRendering import StaticRendering
@@ -22,6 +23,8 @@ class Rendering:
 
         StaticRendering.getScreen = lambda: self.screen
         StaticRendering.setScreen = setter
+
+        PluginScanner.scan("addons")
 
         self.surface = pygame.display.get_surface()
         self.screen = HomeScreen()
