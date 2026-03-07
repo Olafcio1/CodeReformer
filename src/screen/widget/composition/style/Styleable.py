@@ -14,6 +14,9 @@ class Styleable(IContainer):
         self.style = Style(self)
 
     def applyPre(self, surface: pygame.Surface) -> None:
+        if self.style._background != None:
+            surface.fill(self.style._background, (self.x, self.y, self.width, self.height))
+
         self.__pad(1)
 
         if self.style._display == "non-managed":

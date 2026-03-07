@@ -3,6 +3,7 @@ from ..Backable import Backable, T
 from .key.StPadding import StPadding
 from .key.StDisplay import StDisplay
 from .key.StGap import StGap
+from .key.StBackground import StBackground
 
 from abc import ABCMeta
 from typing import Generic
@@ -14,6 +15,7 @@ class Style(
         StPadding,
         StDisplay,
         StGap,
+        StBackground,
 
         metaclass=ABCMeta
 ): pass
