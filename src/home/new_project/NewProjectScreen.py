@@ -1,11 +1,15 @@
 import pygame
 
 from ...resources import ResourceManager
+from ...event import EventManager
 
 from ...screen.Screen import Screen
 
 from ...screen.widget.Container import Container
 from ...screen.widget.ClippedWidget import ClippedWidget
+
+from .Generator import Generator
+from .GeneratorsEvent import GeneratorsEvent
 
 class NewProjectScreen(Screen):
     def init(self) -> None:
@@ -51,10 +55,18 @@ class NewProjectScreen(Screen):
         el = Container(0, 0, 150, self.height - 30)
         el.style.display("grid")
 
-        el.addREWidget(NewProjectScreen.GeneratorButton.Builder()
-                                                            .kw(name="Paper")
-                                                            .size(100, 24)
-                                                        .build())
+        event = GeneratorsEvent()
+        generators: list[Generator] \
+                  = event._GeneratorsEvent__generators  # type: ignore
+                                                        # retardedahh no support in vs code
+
+        EventManager.fire(event)
+
+        for gen in generators:
+            el.addREWidget(NewProjectScreen.GeneratorButton.Builder()
+                                                                .kw(name=gen.getName())
+                                                                .size(100, 24)
+                                                            .build())
 
         return el
 
