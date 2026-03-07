@@ -2,7 +2,7 @@ import pygame
 
 from .Style import Style
 
-from ...Widget import Widget
+from ....iwidget.IWidget import IWidget
 from ....iwidget.IContainer import IContainer
 
 from typing import Self
@@ -22,33 +22,31 @@ class Styleable(IContainer):
         if self.style._display == "non-managed":
             pass
         elif self.style._display == "grid":
-            prev: Widget|None = None
+            prev: IWidget|None = None
             y = self.style._paddingTop
 
-            for element in self._renderables:
-                if isinstance(element, Widget):
-                    if prev != None:
-                        y += prev.height
-                        y += self.style._gapVertical
+            for element in self._widgets:
+                if prev != None:
+                    y += prev.height
+                    y += self.style._gapVertical
 
-                    element.x = self.style._paddingLeft
-                    element.y = y
+                element.x = self.style._paddingLeft
+                element.y = y
 
-                    prev = element
+                prev = element
         elif self.style._display == "flex":
-            prev: Widget|None = None
+            prev: IWidget|None = None
             x = self.style._paddingLeft
 
-            for element in self._renderables:
-                if isinstance(element, Widget):
-                    if prev != None:
-                        x += prev.width
-                        x += self.style._gapHorizontal
+            for element in self._widgets:
+                if prev != None:
+                    x += prev.width
+                    x += self.style._gapHorizontal
 
-                    element.x = x
-                    element.y = self.style._paddingTop
+                element.x = x
+                element.y = self.style._paddingTop
 
-                    prev = element
+                prev = element
         else:
             raise Exception("Invalid 'display' value")
 
