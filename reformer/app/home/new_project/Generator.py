@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import Final
+from typing import Final, _GenericAlias  # type: ignore
 
 from ....util.settings.Category import Category
 
@@ -11,8 +11,12 @@ class Generator(metaclass=ABCMeta):
         self.__name = name
         self.__categories = {}
 
-        for key in self.__dict__:
-            if issubclass(self.__annotations__[key], Category):
+        for key in self.__annotations__:
+            Type = self.__annotations__[key]
+            if type(Type) == _GenericAlias:
+                Type = Type.__args__[0]
+
+            if issubclass(Type, Category):
                 self.__categories[key] = self.__dict__[key]
 
     #############
