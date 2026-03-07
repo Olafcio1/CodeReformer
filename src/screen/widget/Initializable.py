@@ -7,9 +7,11 @@ class Initializable(IRenderable, metaclass=ABCMeta):
     ## INITIALIZATION ##
 
     __initialized: bool
+    __anyChanged: bool
 
     def __init__(self):
         self.__initialized = False
+        self.__anyChanged = False
 
     def init(self) -> None:
         pass
@@ -20,7 +22,7 @@ class Initializable(IRenderable, metaclass=ABCMeta):
         return not self.__initialized
 
     def anyChanged(self) -> bool:
-        return self.pendingRerender()
+        return self.__anyChanged
 
     ## WRAPPERS ##
 
@@ -32,4 +34,7 @@ class Initializable(IRenderable, metaclass=ABCMeta):
 
     def renderChanged(self, surface: pygame.Surface) -> None:
         if self.pendingRerender():
+            self.__anyChanged = True
             self.render(surface)
+        else:
+            self.__anyChanged = False
