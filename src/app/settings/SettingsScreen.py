@@ -1,4 +1,4 @@
-from ..screen.Screen import Screen
+from ...lib.screen.Screen import Screen
 
 class SettingsScreen(Screen):
     def init(self) -> None:

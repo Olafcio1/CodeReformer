@@ -1,7 +1,7 @@
 from typing import Final
 
 from .Generator import Generator
-from ...event import Event
+from ....util.event import Event
 
 class GeneratorsEvent(Event):
     __generators: Final[list[Generator]]

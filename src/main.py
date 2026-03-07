@@ -3,10 +3,10 @@ import pygame
 
 from .resources import ResourceManager
 
-from .screen.Screen import Screen
-from .home.HomeScreen import HomeScreen
+from .lib.screen.Screen import Screen
+from .lib.static.StaticRendering import StaticRendering
 
-from .static.StaticRendering import StaticRendering
+from .app.home.HomeScreen import HomeScreen
 
 class Rendering:
     surface: pygame.Surface

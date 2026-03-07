@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from typing import Final
 
-from ...settings.category.Category import Category
+from ....util.settings.Category import Category
 
 class Generator(metaclass=ABCMeta):
     __name: str

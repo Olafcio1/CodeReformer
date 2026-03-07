@@ -4,14 +4,14 @@ from .new_project.NewProjectScreen import NewProjectScreen
 from .vsc_clone.CloneScreen import CloneScreen
 from ..settings.SettingsScreen import SettingsScreen
 
-from ..resources import ResourceManager
+from ...resources import ResourceManager
 
-from ..screen.Screen import Screen
-from ..screen.widget.Initializable import Initializable
-from ..screen.widget.ClippedWidget import ClippedWidget
-from ..screen.widget.Container import Container
+from ...lib.screen.Screen import Screen
+from ...lib.screen.widget.Initializable import Initializable
+from ...lib.screen.widget.ClippedWidget import ClippedWidget
+from ...lib.screen.widget.Container import Container
 
-from ..static.StaticRendering import StaticRendering
+from ...lib.static.StaticRendering import StaticRendering
 
 from typing import Callable
 

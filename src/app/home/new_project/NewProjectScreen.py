@@ -1,12 +1,12 @@
 import pygame
 
-from ...resources import ResourceManager
-from ...event import EventManager
+from ....resources import ResourceManager
+from ....util.event import EventManager
 
-from ...screen.Screen import Screen
+from ....lib.screen.Screen import Screen
 
-from ...screen.widget.Container import Container
-from ...screen.widget.ClippedWidget import ClippedWidget
+from ....lib.screen.widget.Container import Container
+from ....lib.screen.widget.ClippedWidget import ClippedWidget
 
 from .Generator import Generator
 from .GeneratorsEvent import GeneratorsEvent
