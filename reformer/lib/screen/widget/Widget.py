@@ -4,6 +4,7 @@ from .Attacher import Attacher
 from .Initializable import Initializable
 
 from .builder.WidgetBuilder import WidgetBuilder
+from .composition.style.mini.MiniStyleable import MiniStyleable
 
 from .universal.Parented import Parented
 from .universal.Represented import Represented
@@ -17,7 +18,7 @@ from typing import final, Self
 class Widget(
         Attacher, Initializable,
         Parented, Represented,
-        Hoverable,
+        Hoverable, MiniStyleable,
 
         IWidget,
 
@@ -39,6 +40,7 @@ class Widget(
         Attacher.__init__(self)
         Parented.__init__(self)
         Initializable.__init__(self)
+        MiniStyleable.__init__(self)
 
     #############
     ## GETTERS ##
@@ -57,8 +59,12 @@ class Widget(
     @final
     def render(self, surface: pygame.Surface) -> None:
         super().render(surface)
+        super().applyPre(surface)
+
         self.renderWidget(surface)
         self._reset()
+
+        super().applyPost(surface)
 
     @final
     def renderChanged(self, surface: pygame.Surface) -> None:
