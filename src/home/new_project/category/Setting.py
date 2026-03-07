@@ -4,7 +4,8 @@ from .set_value.StringValue import StringValue
 from .set_value.SelectValue import SelectValue
 from .set_value.PickValue import PickValue
 
-T = TypeVar('T', StringValue, SelectValue, PickValue)
+SettingValue = StringValue | SelectValue | PickValue
+T = TypeVar('T', bound="SettingValue")
 
 @final
 class Setting(Generic[T]):
