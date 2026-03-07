@@ -7,6 +7,7 @@ from .builder.WidgetBuilder import WidgetBuilder
 
 from .universal.Parented import Parented
 from .universal.Represented import Represented
+from .universal.Hoverable import Hoverable
 
 from ..iwidget.IWidget import IWidget
 
@@ -16,7 +17,10 @@ from typing import final, Self
 class Widget(
         Attacher, Initializable,
         Parented, Represented,
+        Hoverable,
+
         IWidget,
+
         metaclass=ABCMeta
 ):
     x: int

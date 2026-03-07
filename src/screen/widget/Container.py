@@ -10,6 +10,7 @@ from .Initializable import Initializable
 from .universal.Parented import Parented
 from .universal.Represented import Represented
 from .universal.Clippable import Clippable
+from .universal.Hoverable import Hoverable
 
 from .composition.style.Styleable import Styleable
 
@@ -18,8 +19,9 @@ from typing import final, overload
 
 class Container(
         Initializable, Styleable,
+        Clippable, Hoverable,
         Parented, Represented,
-        Clippable, IWidget,
+        IWidget,
         metaclass=ABCMeta
 ):
     x: int
@@ -70,9 +72,12 @@ class Container(
     ## SUB PENDING RENDERER ##
     ##########################
 
-    def anyChanged(self) -> bool:
+    def pendingRerender(self) -> bool:
+        if super().pendingRerender():
+            return True
+
         for widget in self._renderables:
-            if widget.anyChanged():
+            if widget.pendingRerender():
                 return True
 
         return False
@@ -109,15 +114,17 @@ class Container(
 
     def mouseMoved(self, x: int, y: int) -> None:
         for widget in self._attachers:
-            widget.mouseMoved(x, y)
+            widget.mouseMoved(x - self.x, y - self.y)
 
     def mousePressed(self, x: int, y: int, button: int) -> None:
-        for widget in self._attachers:
-            widget.mousePressed(x, y, button)
+        if self.isHovered(x, y):
+            for widget in self._attachers:
+                widget.mousePressed(x - self.x, y - self.y, button)
 
     def mouseReleased(self, x: int, y: int, button: int) -> None:
-        for widget in self._attachers:
-            widget.mouseReleased(x, y, button)
+        if self.isHovered(x, y):
+            for widget in self._attachers:
+                widget.mouseReleased(x - self.x, y - self.y, button)
 
     ##############
     ## KEYBOARD ##
