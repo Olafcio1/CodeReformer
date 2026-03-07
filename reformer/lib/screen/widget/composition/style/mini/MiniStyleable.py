@@ -6,10 +6,18 @@ from .....iwidget.IWidget import IWidget
 from typing import Self
 
 class MiniStyleable(IWidget):
-    style: MiniStyle[Self]
+    __style: MiniStyle[Self]
+
+    @property
+    def style(self):
+        return self.__style
 
     def __init__(self):
-        self.style = MiniStyle(self)
+        self.__style = MiniStyle(self)
+
+    ###########
+    ## APPLY ##
+    ###########
 
     def applyPre(self, surface: pygame.Surface) -> None:
         if self.style._background != None:

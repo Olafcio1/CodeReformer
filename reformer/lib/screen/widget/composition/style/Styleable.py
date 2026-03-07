@@ -8,10 +8,18 @@ from ....iwidget.IContainer import IContainer
 from typing import Self
 
 class Styleable(IContainer):
-    style: Style[Self]
+    __style: Style[Self]
+
+    @property
+    def style(self):
+        return self.__style
 
     def __init__(self):
-        self.style = Style(self)
+        self.__style = Style(self)
+
+    ###########
+    ## APPLY ##
+    ###########
 
     def applyPre(self, surface: pygame.Surface) -> None:
         if self.style._background != None:
@@ -58,6 +66,10 @@ class Styleable(IContainer):
 
         if self.style._borderLeft  != None: surface.fill(self.style._borderLeft, (self.x, self.y, 1, self.height))
         if self.style._borderRight != None: surface.fill(self.style._borderRight, (self.x + self.width - 1, self.y, 1, self.height))
+
+    ##########
+    ## MISC ##
+    ##########
 
     def __pad(self, mul: int) -> None:
         self.width -= self.style._paddingLeft * mul
