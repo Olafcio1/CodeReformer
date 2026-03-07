@@ -5,7 +5,7 @@ import os
 from .PluginManifest import PluginManifest
 
 from ..util.event import EventManager
-from ..resources import ResourceManager
+from ..packs import Pack
 
 class PluginLoader:
     path: str
@@ -32,7 +32,15 @@ class PluginLoader:
 
     def loadAssets(self) -> None:
         for res in self.manifest.resources:
-            ResourceManager.load(self.__package.replace('.', '/') + "/" + os.path.normpath(res))
+            path = self.__package.replace('.', '/') + "/" + \
+                                                      os.path.normpath(res)
+
+            pack = Pack(path, mergedDefaults={
+                "name": self.manifest.name,
+                "description": self.manifest.description
+            })
+
+            pack.load()
 
     def loadScripts(self) -> None:
         for script in self.manifest.scripts:
