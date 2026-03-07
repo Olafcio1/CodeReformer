@@ -53,8 +53,11 @@ class NewProjectScreen(Screen):
             font = ResourceManager.font['/font/LEXEND.TTF']
             size = font.size(self.name)
 
+            if self.isHovered():
+                surface.fill(0xffffff22)
+
             surface.blit(self.icon, (15, (self.height - self.icon.get_height())/2))
-            surface.blit(font.render(self.name, True, 0x5f5f5fff), (35, (self.height - size[1])/2))
+            surface.blit(font.render(self.name, True, 0x5f5f5fff), (40, (self.height - size[1])/2))
 
     def makeGeneratorsContainer(self) -> Container:
         el = Container(0, 0, 150, self.height - 30)

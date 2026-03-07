@@ -44,6 +44,7 @@ class Container(
 
     def __init__(self, *params):
         Initializable.__init__(self)
+        Hoverable.__init__(self)
         Styleable.__init__(self)
         Parented.__init__(self)
 

@@ -39,6 +39,7 @@ class Widget(
 
         Attacher.__init__(self)
         Parented.__init__(self)
+        Hoverable.__init__(self)
         Initializable.__init__(self)
         MiniStyleable.__init__(self)
 
