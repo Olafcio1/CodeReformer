@@ -23,21 +23,21 @@ class Styleable(IContainer):
             pass
         elif self.style._display == "grid":
             prev: Widget|None = None
-            x = 0
+            y = self.style._paddingTop
 
             for element in self._renderables:
                 if isinstance(element, Widget):
                     if prev != None:
-                        x += prev.height
-                        x += self.style._gapVertical
+                        y += prev.height
+                        y += self.style._gapVertical
 
-                    element.x = 0
-                    element.y = x
+                    element.x = self.style._paddingLeft
+                    element.y = y
 
                     prev = element
         elif self.style._display == "flex":
             prev: Widget|None = None
-            x = 0
+            x = self.style._paddingLeft
 
             for element in self._renderables:
                 if isinstance(element, Widget):
@@ -46,7 +46,7 @@ class Styleable(IContainer):
                         x += self.style._gapHorizontal
 
                     element.x = x
-                    element.y = 0
+                    element.y = self.style._paddingTop
 
                     prev = element
         else:
@@ -62,9 +62,6 @@ class Styleable(IContainer):
         if self.style._borderRight != None: surface.fill(self.style._borderRight, (self.x + self.width - 1, self.y, 1, self.height))
 
     def __pad(self, mul: int) -> None:
-        self.x += self.style._paddingLeft * mul
-        self.y += self.style._paddingTop * mul
-
         self.width -= self.style._paddingLeft * mul
         self.width -= self.style._paddingRight * mul
 
