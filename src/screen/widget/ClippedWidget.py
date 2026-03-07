@@ -3,17 +3,16 @@ import pygame
 from .Widget import Widget
 from ..UIError import UIError
 
+from .universal.Clippable import Clippable
+
 from abc import ABCMeta, abstractmethod
 from typing import final
 
-class ClippedWidget(Widget, metaclass=ABCMeta):
+class ClippedWidget(Widget, Clippable, metaclass=ABCMeta):
     @final
     def renderWidget(self, surface: pygame.Surface) -> None:
         try:
-            sub = surface.subsurface(
-                self.x, self.y,
-                self.width, self.height
-            )
+            sub = self._clipsub(surface)
         except ValueError:
             xOverflow = self.width > surface.get_width()
             yOverflow = self.height > surface.get_height()

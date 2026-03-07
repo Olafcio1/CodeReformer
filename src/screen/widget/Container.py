@@ -9,6 +9,7 @@ from .Initializable import Initializable
 
 from .universal.Parented import Parented
 from .universal.Represented import Represented
+from .universal.Clippable import Clippable
 
 from .composition.style.Styleable import Styleable
 
@@ -18,7 +19,7 @@ from typing import final, overload
 class Container(
         Initializable, Styleable,
         Parented, Represented,
-        IWidget,
+        Clippable, IWidget,
         metaclass=ABCMeta
 ):
     x: int
@@ -84,17 +85,20 @@ class Container(
         super().render(surface)
         super().applyPre(surface)
 
+        sub = self._clipsub(surface)
         for widget in self._renderables:
-            widget.render(surface.subsurface(self.x, self.y, self.width, self.height))
+            widget.render(sub)
 
         super().applyPost(surface)
+        pygame.display.flip()
 
     def renderChanged(self, surface: pygame.Surface) -> None:
         if self.pendingRerender():
             self.render(surface)
         else:
+            sub = self._clipsub(surface)
             for widget in self._renderables:
-                widget.renderChanged(surface.subsurface(self.x, self.y, self.width, self.height))
+                widget.renderChanged(sub)
 
             if self.anyChanged():
                 pygame.display.flip()
