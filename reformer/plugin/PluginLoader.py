@@ -3,7 +3,9 @@ import sys
 import os
 
 from .PluginManifest import PluginManifest
+
 from ..util.event import EventManager
+from ..resources import ResourceManager
 
 class PluginLoader:
     path: str
@@ -25,6 +27,14 @@ class PluginLoader:
             sys.path.insert(1, parent)
 
     def load(self) -> None:
+        self.loadAssets()
+        self.loadScripts()
+
+    def loadAssets(self) -> None:
+        for res in self.manifest.resources:
+            ResourceManager.load(self.__package.replace('.', '/') + "/" + os.path.normpath(res))
+
+    def loadScripts(self) -> None:
         for script in self.manifest.scripts:
             path = script.value
 

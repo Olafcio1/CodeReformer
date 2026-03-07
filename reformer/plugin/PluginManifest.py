@@ -15,6 +15,7 @@ class PluginManifest:
     version: int
     version_name: str
     description: str
+    resources: list[str]
     scripts: list[Script]
 
     def __init__(self, data: dict[str, Any]) -> None:
@@ -22,4 +23,5 @@ class PluginManifest:
         self.version = data['version']
         self.version_name = data['version_name']
         self.description = data['description']
+        self.resources = data.get('resources', [])
         self.scripts = [PluginManifest.Script(obj) for obj in data['scripts']]

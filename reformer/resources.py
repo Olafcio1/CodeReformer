@@ -9,7 +9,10 @@ class ResourceManager:
 
     @classmethod
     def loadBuiltin(cls, *, rel: str = ""):
-        path = "assets" + rel
+        cls.load("assets" + rel)
+
+    @classmethod
+    def load(cls, path: str, *, rel: str = ""):
         files = os.listdir(path)
 
         for fn in files:
@@ -26,6 +29,6 @@ class ResourceManager:
                 else:
                     print("[ResourceManager/WARN] Unrecognized file %r" % sub)
             elif os.path.isdir(sub):
-                cls.loadBuiltin(rel=subRel)
+                cls.load(sub, rel=subRel)
             else:
                 print("[ResourceManager/WARN] Non-standard file %r" % sub)
