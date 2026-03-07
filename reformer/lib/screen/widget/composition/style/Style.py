@@ -1,4 +1,5 @@
 from ..Backable import Backable, T
+from .CallSetter import CallSetter
 
 from .key.StPadding import StPadding
 from .key.StDisplay import StDisplay
@@ -11,6 +12,7 @@ from typing import Generic
 
 class Style(
         Backable[T],
+        CallSetter[T],
         Generic[T],
 
         StPadding,
