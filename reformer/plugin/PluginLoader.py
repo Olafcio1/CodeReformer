@@ -16,8 +16,8 @@ class PluginLoader:
 
         split = path.replace('\\', '/').split('/')
 
-        self.__package = split.pop() + '.' + \
-                          split.pop()
+        self.__package = split.pop(-2) + '.' + \
+                         split.pop()
 
         parent = '/'.join(split)
         if parent not in sys.path:
@@ -29,7 +29,7 @@ class PluginLoader:
 
             assert path.endswith(".py")
 
-            __import__(self.__package + os.path.normpath(path.removesuffix('.py')) \
+            __import__(self.__package + "." + os.path.normpath(path.removesuffix('.py')) \
                                             .replace('\\', '/')
                                             .replace('/', '.'))
 
