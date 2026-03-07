@@ -1,4 +1,4 @@
-from typing import TypeVar, Callable, Protocol, final
+from typing import TypeVar, Callable, Protocol, Any, final, overload
 
 from .Event import Event
 from .NoEventArgumentException import NoEventArgumentException
@@ -17,17 +17,40 @@ class ListenerList(Protocol):
     def __setitem__(self, index: type[T], value: list[Callable[[T], None]]) -> None:
         ...
 
+EventTarget = Callable[[T], None] | object
+
 @final
 class EventManager:
     __listeners: ListenerList = {}  # type: ignore
 
     @classmethod
-    def register(cls, method: Callable[[T], None]) -> None:
-        event = cls.__getEvent(method)
-        if event in cls.__listeners:
-            cls.__listeners[event].append(method)
+    @overload
+    def register(cls, /, target: Callable[[T], None]) -> None:
+        ...
+
+    @classmethod
+    @overload
+    def register(cls, /, target: object) -> None:
+        ...
+
+    @classmethod
+    def register(cls, target: EventTarget) -> None:
+        if isinstance(method := target, Callable):
+            event = cls.__getEvent(method)
+            if event in cls.__listeners:
+                cls.__listeners[event].append(method)
+            else:
+                cls.__listeners[event] = [method]
+        elif isinstance(obj := target, object):
+            search = type(obj) if isinstance(obj, type) else obj
+            methods: dict[str, Any] \
+                   = search.__dict__  # type: ignore
+
+            for m in methods.values():
+                if isinstance(m, Callable) and hasattr(m, '__eventhandler__'):
+                    cls.register(m)
         else:
-            cls.__listeners[event] = [method]
+            raise Exception("No matching overload")
 
     @classmethod
     def fire(cls, event: T) -> None:
