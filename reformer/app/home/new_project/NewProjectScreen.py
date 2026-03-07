@@ -18,7 +18,7 @@ class NewProjectScreen(Screen):
         window.style.background(0x333433)
 
         titlebar = Container(0, 0, self.width, 30)
-        # titlebar.style.borderBottom()
+        titlebar.style.borderBottom(0x222322)
         titlebar.text = ("New Project", 0xcfcfcfff, ResourceManager.font["/font/LEXEND.TTF"])
 
         content = Container(0, 30, self.width, self.height - 30)
@@ -34,22 +34,27 @@ class NewProjectScreen(Screen):
 
     class GeneratorButton(ClippedWidget):
         name: str
+        icon: pygame.Surface
 
         def __init__(
                 self,
                 x: int, y: int,
                 width: int, height: int,
                 *,
-                name: str
+                name: str,
+                icon: pygame.Surface
         ):
             super().__init__(x, y, width, height)
+
             self.name = name
+            self.icon = pygame.transform.smoothscale(icon, (min(25, self.height - 5), min(25, self.height - 5)))
 
         def renderClipped(self, surface: pygame.Surface) -> None:
             font = ResourceManager.font['/font/LEXEND.TTF']
             size = font.size(self.name)
 
-            surface.blit(font.render(self.name, True, 0x4f4f4f), (30, (self.height - size[1])/2))
+            surface.blit(self.icon, (15, (self.height - self.icon.get_height())/2))
+            surface.blit(font.render(self.name, True, 0x5f5f5fff), (35, (self.height - size[1])/2))
 
     def makeGeneratorsContainer(self) -> Container:
         el = Container(0, 0, 150, self.height - 30)
@@ -64,7 +69,7 @@ class NewProjectScreen(Screen):
 
         for gen in generators:
             el.addREWidget(NewProjectScreen.GeneratorButton.Builder()
-                                                                .kw(name=gen.getName())
+                                                                .kw(name=gen.getName(), icon=gen.getIcon())
                                                                 .size(100, 24)
                                                             .build())
 

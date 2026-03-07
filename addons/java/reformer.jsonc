@@ -4,6 +4,9 @@
     "version": 1,
     "version_name": "alpha 7m26/1",
     "description": "Adds Java language support, generators and more.",
+    "resources": [
+        "./assets"
+    ],
     "scripts": [
         {
             "type": "plugin",
