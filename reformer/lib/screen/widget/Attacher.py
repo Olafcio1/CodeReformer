@@ -12,12 +12,15 @@ class Attacher(IAttacher, metaclass=ABCMeta):
     ###########
 
     def mouseMoved(self, x: int, y: int) -> None:
+        super().mouseMoved(x, y)  # type: ignore
         self.__interacted = True
 
     def mousePressed(self, x: int, y: int, button: int) -> None:
+        super().mousePressed(x, y, button)  # type: ignore
         self.__interacted = True
 
     def mouseReleased(self, x: int, y: int, button: int) -> None:
+        super().mouseReleased(x, y, button)  # type: ignore
         self.__interacted = True
 
     ##############
@@ -25,9 +28,11 @@ class Attacher(IAttacher, metaclass=ABCMeta):
     ##############
 
     def keyPressed(self, key: int, unicode: str) -> None:
+        super().keyPressed(key, unicode)  # type: ignore
         self.__interacted = True
 
     def keyReleased(self, key: int, unicode: str) -> None:
+        super().keyPressed(key, unicode)  # type: ignore
         self.__interacted = True
 
     ###########
