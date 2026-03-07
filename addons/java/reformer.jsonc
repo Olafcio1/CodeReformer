@@ -1,0 +1,13 @@
+{
+    // "$schema": "extension-manifest.json",  //TODO: 1. Write the schema; 2. Host it on olafcio1.github.io
+    "name": "Java Language Support",
+    "version": 1,
+    "version_name": "alpha 7m26/1",
+    "description": "Adds Java language support, generators and more.",
+    "scripts": [
+        {
+            "type": "plugin",
+            "value": "./main.py"
+        }
+    ]
+}
