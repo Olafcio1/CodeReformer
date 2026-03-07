@@ -1,5 +1,5 @@
-from ...src.event.EventHandler import EventHandler
-from ...src.home.new_project.GeneratorsEvent import GeneratorsEvent
+from reformer.util.event.EventHandler import EventHandler
+from reformer.app.home.new_project.GeneratorsEvent import GeneratorsEvent
 
 from .javagen import JavaGenerator
 

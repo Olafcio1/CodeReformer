@@ -1,8 +1,9 @@
 import os
 
-from ...src.home.new_project.Generator import Generator
-from ...src.settings.category.Category import Category
-from ...src.settings.category.set_value.StringValue import StringValue
+from reformer.app.home.new_project.Generator import Generator
+
+from reformer.util.settings.Category import Category
+from reformer.util.settings.set_value.StringValue import StringValue
 
 class JavaGenerator(Generator):
     publishing = Category("publishing",

@@ -7,7 +7,7 @@ A Code Reformer library project.
 
 ## 📮 Defining a category
 ```python
-from src.util.settings import Category, StringValue
+from reformer.util.settings import Category, StringValue
 
 Category("publishing",
             groupID=StringValue(),

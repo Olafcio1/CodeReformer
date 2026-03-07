@@ -9,7 +9,7 @@ A Code Reformer library project.
 To register a method:
 
 ```python
-from src.util.event import EventManager
+from reformer.util.event import EventManager
 
 def onEvent(event: SampleEvent) -> None:
     print("onEvent invoked")
@@ -20,7 +20,7 @@ EventManager.register(onEvent)
 To register a class:
 
 ```python
-from src.util.event import EventManager, EventHandler
+from reformer.util.event import EventManager, EventHandler
 from typing import final
 
 @final
@@ -34,7 +34,7 @@ EventManager.register(MyEventListener)
 
 ## 🧬 Creating events
 ```python
-from src.util.event import Event
+from reformer.util.event import Event
 
 class SampleEvent(Event):
     pass
@@ -42,7 +42,7 @@ class SampleEvent(Event):
 
 ## 📮 Posting an event
 ```python
-from src.util.event import EventManager
+from reformer.util.event import EventManager
 
 EventManager.fire(SampleEvent())
 ```
