@@ -1,3 +1,3 @@
 from .Event import Event
-from .Events import EventManager
+from .EventManager import EventManager
 from .NoEventArgumentException import NoEventArgumentException
