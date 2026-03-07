@@ -3,6 +3,7 @@ import sys
 import os
 
 from .PluginManifest import PluginManifest
+from ..util.event import EventManager
 
 class PluginLoader:
     path: str
@@ -29,9 +30,20 @@ class PluginLoader:
 
             assert path.endswith(".py")
 
-            __import__(self.__package + "." + os.path.normpath(path.removesuffix('.py')) \
-                                            .replace('\\', '/')
-                                            .replace('/', '.'))
+            package = self.__package + "." + os.path.normpath(path.removesuffix('.py')) \
+                                                .replace('\\', '/') \
+                                                .replace('/', '.')
+
+            module = __import__(package)
+            names = package.split(".")[1:]
+
+            for name in names:
+                module = getattr(module, name)
+
+            clazz = getattr(module, "Plugin")
+            inst = clazz()
+
+            EventManager.register(inst)
 
     def getManifest(self) -> PluginManifest:
         with open(self.path + "/reformer.jsonc") as f:
