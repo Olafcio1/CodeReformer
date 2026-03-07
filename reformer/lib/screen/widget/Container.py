@@ -156,7 +156,7 @@ class Container(
 
         self._widgets.append(widget)
 
-        widget.parent = self
+        widget._Parented__self_parent = self  # type: ignore
 
     ##############
     ## CHILDREN ##
