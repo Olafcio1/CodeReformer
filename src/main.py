@@ -50,17 +50,22 @@ class Rendering:
             ### KEYBOARD ###
             elif event.type == pygame.KEYDOWN:
                 self.screen.keyPressed(event.key, event.unicode)
+                self.render()
             elif event.type == pygame.KEYUP:
                 self.screen.keyReleased(event.key, event.unicode)
+                self.render()
             ### MOUSE ###
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 self.screen.mousePressed(x, y, event.button)
+                self.render()
             elif event.type == pygame.MOUSEBUTTONUP:
                 x, y = event.pos
                 self.screen.mouseReleased(x, y, event.button)
+                self.render()
             elif event.type == pygame.MOUSEMOTION:
                 x, y = event.pos
                 self.screen.mouseMoved(x, y)
+                self.render()
 
 Rendering()
