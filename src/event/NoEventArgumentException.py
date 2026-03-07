@@ -1,0 +1,2 @@
+class NoEventArgumentException(Exception):
+    pass
