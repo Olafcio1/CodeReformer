@@ -35,6 +35,9 @@ class PluginLoader:
 
     def getManifest(self) -> PluginManifest:
         with open(self.path + "/reformer.jsonc") as f:
-            data = json.load(f)
+            raw = f.read()
+
+        lines = filter(lambda line: not line.strip().startswith("//"), raw.splitlines())
+        data = json.loads("\n".join(lines))
 
         return PluginManifest(data)
