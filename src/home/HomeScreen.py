@@ -1,11 +1,17 @@
 import pygame
 
+from .new_project.NewProjectScreen import NewProjectScreen
+from .vsc_clone.CloneScreen import CloneScreen
+from ..settings.SettingsScreen import SettingsScreen
+
 from ..resources import ResourceManager
 
 from ..screen.Screen import Screen
 from ..screen.widget.Initializable import Initializable
 from ..screen.widget.ClippedWidget import ClippedWidget
 from ..screen.widget.Container import Container
+
+from ..static.StaticRendering import StaticRendering
 
 from typing import Callable
 
@@ -60,6 +66,13 @@ class HomeScreen(Screen):
 
             surface.blit(font.render(self.text, True, 0x59595fff), ((self.width - size[0])/2, (self.height - size[1])/2))
 
+        def getText(self) -> str:
+            return self.text
+
+        def mousePressed(self, x: int, y: int, button: int) -> None:
+            if self.isHovered(x, y):
+                self.onClick()
+
     def init(self) -> None:
         self.addRenderable(HomeScreen.Background())
         self.addREWidget(HomeScreen.Logo(
@@ -72,7 +85,7 @@ class HomeScreen(Screen):
             (int) (self.width/14),
             (int) (self.height/7 + 403/4.4 - 1),
             (int) (1024/4.4),
-            (int) (100)
+            (int) (200)
         ).style
             .display("grid")
             .gap(8)
@@ -80,14 +93,38 @@ class HomeScreen(Screen):
          .back)
 
         btns.addREWidget(HomeScreen.Button.Builder()
-                                        .kw(text="New Project", onClick=self.newProject)
+                                        .kw(text="New Project", onClick=HomeScreen.Actions.newProject)
                                         .size((int) (1024/4.4), 24)
                                    .build())
 
         btns.addREWidget(HomeScreen.Button.Builder()
-                                        .kw(text="Open Project", onClick=self.newProject)
+                                        .kw(text="Open Project", onClick=HomeScreen.Actions.openProject)
                                         .size((int) (1024/4.4), 24)
                                    .build())
 
-    def newProject(self) -> None:
-        ...
+        btns.addREWidget(HomeScreen.Button.Builder()
+                                        .kw(text="Clone from VSC", onClick=HomeScreen.Actions.cloneFromVSC)
+                                        .size((int) (1024/4.4), 24)
+                                   .build())
+
+        btns.addREWidget(HomeScreen.Button.Builder()
+                                        .kw(text="Settings", onClick=HomeScreen.Actions.openSettings)
+                                        .size((int) (1024/4.4), 24)
+                                   .build())
+
+    class Actions:
+        @classmethod
+        def newProject(cls) -> None:
+            StaticRendering.setScreen(NewProjectScreen())
+
+        @classmethod
+        def openProject(cls) -> None:
+            raise NotImplemented
+
+        @classmethod
+        def cloneFromVSC(cls) -> None:
+            StaticRendering.setScreen(CloneScreen())
+
+        @classmethod
+        def openSettings(cls) -> None:
+            StaticRendering.setScreen(SettingsScreen())
