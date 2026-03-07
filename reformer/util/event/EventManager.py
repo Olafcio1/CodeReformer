@@ -24,7 +24,7 @@ class EventManager(
     def fire(cls, event: T) -> None:
         if type(event) in cls._listeners:
             listeners: list[Callable[[T], None]] \
-                     = cls._listeners[event]  # type: ignore
+                     = cls._listeners[type(event)]  # type: ignore
 
             for method in listeners:
                 method(event)
