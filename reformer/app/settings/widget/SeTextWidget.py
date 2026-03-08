@@ -96,14 +96,20 @@ class SeTextWidget(SettingWidget[StringValue]):
     def keyPressed(self, key: int, unicode: str) -> None:
         if self.isFocused():
             print("[TextInput] [Keyboard] %s" % key)
-            if key == 1073741904:
+            if key == pygame.K_LEFT:
                 if self.__position > 0:
                     self.__currentX -= self.__charX[self.__position - 1]
                     self.__position -= 1
-            elif key == 1073741903:
+            elif key == pygame.K_RIGHT:
                 if self.__position < len(self.value.value):
                     self.__currentX += self.__charX[self.__position]
                     self.__position += 1
+            elif key == pygame.K_HOME:
+                self.__position = 0
+                self.__currentX = 0
+            elif key == pygame.K_END:
+                self.__position = len(self.value.value)
+                self.__currentX = sum(self.__charX[1:])
             elif unicode == '\x08':
                 if self.__position == len(self.value.value)-1:
                     self.value.value = self.value.value[:-1]
