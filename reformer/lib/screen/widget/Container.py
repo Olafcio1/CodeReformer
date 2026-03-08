@@ -15,7 +15,13 @@ from .universal.Hoverable import Hoverable
 from .composition.style.Styleable import Styleable
 
 from abc import ABCMeta
-from typing import final, overload
+from typing import Self, final, overload
+
+TextArgs = tuple[
+                str,
+                pygame.color.Color | tuple[int, int, int] | tuple[int, int, int, int] | int,
+                pygame.font.Font
+]
 
 class Container(
         Initializable, Styleable,
@@ -170,6 +176,10 @@ class Container(
     def getText(self) -> str:
         return self.text
 
+    def setText(self, *value: *TextArgs) -> Self:
+        self.text = value
+        return self
+
     ##########
     ## TEXT ##
     ##########
@@ -184,7 +194,7 @@ class Container(
         return value
 
     @text.setter
-    def text(self, args: tuple[str, pygame.color.Color | tuple[int, int, int] | tuple[int, int, int, int] | int, pygame.font.Font]) -> None:
+    def text(self, args: TextArgs) -> None:
         value, color, font = args
 
         class text_widget(Widget):
