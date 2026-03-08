@@ -25,8 +25,6 @@ class Styleable(IContainer):
         if self.style._background != None:
             surface.fill(self.style._background, (self.x, self.y, self.width, self.height))
 
-        self.__pad(1)
-
         if self.style._display == "non-managed":
             pass
         elif self.style._display == "grid":
@@ -59,8 +57,6 @@ class Styleable(IContainer):
             raise Exception("Invalid 'display' value")
 
     def applyPost(self, surface: pygame.Surface) -> None:
-        self.__pad(-1)
-
         if self.style._borderTop    != None: surface.fill(self.style._borderTop, (self.x, self.y, self.width, 1))
         if self.style._borderBottom != None: surface.fill(self.style._borderBottom, (self.x, self.y + self.height - 1, self.width, 1))
 
@@ -78,14 +74,3 @@ class Styleable(IContainer):
     @property
     def innerHeight(self) -> int:
         return self.height - self.style._paddingTop - self.style._paddingBottom
-
-    ##########
-    ## MISC ##
-    ##########
-
-    def __pad(self, mul: int) -> None:
-        self.width -= self.style._paddingLeft * mul
-        self.width -= self.style._paddingRight * mul
-
-        self.height -= self.style._paddingTop * mul
-        self.height -= self.style._paddingBottom * mul
