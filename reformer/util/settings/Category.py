@@ -11,4 +11,23 @@ class Category:
         self.settings = {}
 
         for name in settings:
-            self.settings[name] = Setting(name, settings[name])
+            self.settings[name] = Setting(self.__humanize(name), settings[name])
+
+    @staticmethod
+    def __humanize(name: str) -> str:
+        out = ""
+        word = True
+        lastUpper = True
+
+        for ch in name:
+            if ch.isupper() != lastUpper:
+                if not word:
+                    out += " "
+
+                out += ch.upper()
+                lastUpper = ch.isupper()
+            else:
+                out += ch
+                word = False
+
+        return out
