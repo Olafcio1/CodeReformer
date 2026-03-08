@@ -2,13 +2,15 @@ import pygame
 
 from ..SettingWidget import SettingWidget
 
+from ....lib.FigureUtil import FigureUtil
+from ....lib.TextUtil import TextUtil
+
 from ....resources import ResourceManager
 from ....util.settings.set_value.StringValue import StringValue
 
 class SeTextWidget(SettingWidget[StringValue]):
     """
-    Text input widget.<br/>
-    TODO: please fix ts!
+    Text input widget.
 
     :api-status: experimental
     """
@@ -25,33 +27,16 @@ class SeTextWidget(SettingWidget[StringValue]):
         self.__currentX = -1
 
     def __textSize(self, text: str) -> tuple[int, int]:
-        return self._font.render(text, True, 0x000000ff).get_size()
+        return TextUtil.size(text, self._font)
 
     def renderWidget(self, surface: pygame.Surface) -> None:
         super().renderWidget(surface)
-
-        self.__roundedRect(surface, 0xb2b2b2, (self.x + self.valueX - 5, self.y - 1, self.width + 4, self.height + 3))
+        FigureUtil.roundedRect_stroke(surface, 0xb2b2b2, (self.x + self.valueX - 5, self.y - 1, self.width + 4, self.height + 3))
 
         surface.blit(self._font.render(self.value.value, True, 0xa2a2a2ff), (self.x + self.valueX, self.y))
-        surface.fill(0x555555, (self.x + self.valueX + self.__currentX, self.y, 2, self.height))
 
-    def __roundedRect(self, surface: pygame.Surface, color: int, pos: tuple[int, int, int, int]) -> None:
-        pygame.draw.rect(surface, color, pos, 1)
-
-        x, y, w, h = pos
-
-        for i in range(3):
-            # Left-Top
-            surface.set_at((x + i, y), 0x333433)
-            surface.set_at((x, y + i), 0x333433)
-
-            surface.set_at((x + (3 - i), y + i), 0xb2b2b2)
-
-            # Right-Bottom
-            surface.set_at((x + w - 1 - i, y + h - 1), 0x333433)
-            surface.set_at((x + w - 1, y + h - 1 - i), 0x333433)
-
-            surface.set_at((x + w - 1 - i, y + h - (3 - i + 1)), 0xb2b2b2)
+        if self.isFocused():
+            surface.fill(0x555555, (self.x + self.valueX + self.__currentX, self.y, 2, self.height))
 
     ###########
     ## MOUSE ##
