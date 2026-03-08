@@ -3,6 +3,8 @@ import pygame
 from ....resources import ResourceManager
 from ....util.event import EventManager
 
+from ....lib.TextUtil import TextUtil
+
 from ....lib.screen.Screen import Screen
 
 from ....lib.screen.widget.Container import Container
@@ -10,6 +12,7 @@ from ....lib.screen.widget.ClippedWidget import ClippedWidget
 
 from ....util.settings.Setting import Setting
 from ....util.settings.set_value.StringValue import StringValue
+from ....util.settings.set_value.PickValue import PickValue
 
 from ...settings import widget as SeWidget
 
@@ -113,14 +116,30 @@ class NewProjectScreen(Screen):
                                                     .size(self.formEl.innerWidth, 20)
                                                 .build())
 
-        self.formEl.addREWidget(SeWidget.TextInput \
-                                        .Builder()
-                                            .kw(setting=Setting(
-                                                name="Path",
-                                                value=StringValue("~/CodeReformerProjects")
-                                            ), valueX=ResourceManager.font['/font/LEXEND.TTF'].size("Path")[0])
-                                            .size(350, 20)
-                                        .build())
+        baseSettings = [
+            Setting(
+                name="Name",
+                value=StringValue("")
+            ),
+            Setting(
+                name="Path",
+                value=StringValue("~/CodeReformerProjects")
+            )
+        ]
+
+        font = ResourceManager.font['/font/LEXEND.TTF']
+        valueX = max([TextUtil.size(setting.name, font)[0] for setting in baseSettings])
+
+        for setting in baseSettings:
+            self.formEl.addREWidget(
+                {
+                    StringValue: SeWidget.TextInput,
+                    PickValue: SeWidget.PickSelect
+                }[type(setting.value)] \
+                                       .Builder()
+                                           .kw(setting=setting, valueX=valueX)
+                                           .size(350, 20)
+                                       .build())
 
     def __makeGeneratorsContainer(self) -> Container:
         el = Container(0, 0, 150, self.height - 30)
