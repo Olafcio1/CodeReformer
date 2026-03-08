@@ -36,8 +36,17 @@ class Styleable(IContainer):
                     y += prev.height
                     y += self.style._gapVertical
 
-                element.x = self.style._paddingLeft
+                x = self.style._paddingLeft
+
+                if hasattr(element, 'style'):
+                    x += element.style._marginLeft # type: ignore
+                    y += element.style._marginTop  # type: ignore
+
+                element.x = x
                 element.y = y
+
+                if hasattr(element, 'style'):
+                    y += element.style._marginBottom  # type: ignore
 
                 prev = element
         elif self.style._display == "flex":
@@ -49,8 +58,17 @@ class Styleable(IContainer):
                     x += prev.width
                     x += self.style._gapHorizontal
 
+                y = self.style._paddingTop
+
+                if hasattr(element, 'style'):
+                    x += element.style._marginLeft # type: ignore
+                    y += element.style._marginTop  # type: ignore
+
                 element.x = x
-                element.y = self.style._paddingTop
+                element.y = y
+
+                if hasattr(element, 'style'):
+                    x += element.style._marginRight # type: ignore
 
                 prev = element
         else:
