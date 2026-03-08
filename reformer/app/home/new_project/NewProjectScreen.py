@@ -138,10 +138,20 @@ class NewProjectScreen(Screen):
                                                         .size(self.formEl.innerWidth, 20)
                                                     .build()
                                                     .style("""
-                                                           margin_top: 4
+                                                           margin_top: 5
                                                            """))
 
             self.appendSettings([*category.settings.values()])
+
+        self.formEl.addREWidget(Container(
+                                    -1, -1,
+                                    150, 30
+                                ).setText("Create", 0xcfcfcfff, ResourceManager.font['/font/LEXEND.TTF']) \
+                                 .style("""
+                                        background: 0x0e477e
+                                        border: 0x222322, 0x222322, 0x222322, 0x222322
+                                        margin_top: 5
+                                        """))
 
     def appendSettings(self, settings: list[Setting]) -> None:
         font = ResourceManager.font['/font/LEXEND.TTF']
