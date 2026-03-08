@@ -40,9 +40,8 @@ class SettingWidget(Widget, Generic[V], metaclass=ABCMeta):
 
         self.init()
 
-    @abstractmethod
     def init(self) -> None:
-        ...
+        pass
 
     @abstractmethod
     def renderWidget(self, surface: Surface) -> None:
@@ -65,9 +64,8 @@ class SettingWidget(Widget, Generic[V], metaclass=ABCMeta):
     def mouseIn(self, x: int, y: int) -> None:
         ...
 
-    @abstractmethod
     def mouseOut(self) -> None:
-        ...
+        pass
 
     def isFocused(self) -> bool:
         return self.__focused
