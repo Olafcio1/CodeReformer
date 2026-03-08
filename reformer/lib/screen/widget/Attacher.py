@@ -32,7 +32,7 @@ class Attacher(IAttacher, metaclass=ABCMeta):
         self.__interacted = True
 
     def keyReleased(self, key: int, unicode: str) -> None:
-        super().keyPressed(key, unicode)  # type: ignore
+        super().keyReleased(key, unicode)  # type: ignore
         self.__interacted = True
 
     ###########
