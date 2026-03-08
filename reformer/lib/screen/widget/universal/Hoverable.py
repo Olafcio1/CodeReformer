@@ -5,9 +5,11 @@ from ...iwidget.IWidget import IWidget
 
 class Hoverable(IWidget, metaclass=ABCMeta):
     __hovered: bool
+    __usesHover: bool
 
     def __init__(self):
         self.__hovered = False
+        self.__usesHover = False
 
     @overload
     def isHovered(self) -> bool:
@@ -19,6 +21,7 @@ class Hoverable(IWidget, metaclass=ABCMeta):
 
     def isHovered(self, *params) -> bool:
         if len(params) == 0:
+            self.__usesHover = True
             return self.__hovered
         elif len(params) == 2:
             x, y = params
