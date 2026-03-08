@@ -116,7 +116,7 @@ class NewProjectScreen(Screen):
                                                     .size(self.formEl.innerWidth, 20)
                                                 .build())
 
-        baseSettings = [
+        baseSettings: list[Setting] = [
             Setting(
                 name="Name",
                 value=StringValue("")
@@ -127,10 +127,27 @@ class NewProjectScreen(Screen):
             )
         ]
 
-        font = ResourceManager.font['/font/LEXEND.TTF']
-        valueX = max([TextUtil.size(setting.name, font)[0] for setting in baseSettings])
+        self.appendSettings(baseSettings)
 
-        for setting in baseSettings:
+        categories = generator.getCategories()
+
+        for category in categories.values():
+            self.formEl.addREWidget(NewProjectScreen.ContentTitle \
+                                                    .Builder() \
+                                                        .kw(text=category.name)
+                                                        .size(self.formEl.innerWidth, 20)
+                                                    .build()
+                                                    .style("""
+                                                           margin_top: 4
+                                                           """))
+
+            self.appendSettings([*category.settings.values()])
+
+    def appendSettings(self, settings: list[Setting]) -> None:
+        font = ResourceManager.font['/font/LEXEND.TTF']
+        valueX = max([TextUtil.size(setting.name, font)[0] for setting in settings])
+
+        for setting in settings:
             self.formEl.addREWidget(
                 {
                     StringValue: SeWidget.TextInput,
