@@ -15,13 +15,18 @@ class Generator(metaclass=ABCMeta):
         self.__icon = icon
         self.__categories = {}
 
-        for key in self.__annotations__:
-            Type = self.__annotations__[key]
+        cls = type(self)
+        members = {**cls.__dict__}  # Fixes 'RuntimeError: dictionary changed during iteration'
+
+        for key in members:
+            Value = members[key]
+            Type = cls.__annotations__.get(key, type(Value))
+
             if type(Type) == _GenericAlias:
                 Type = Type.__args__[0]
 
             if issubclass(Type, Category):
-                self.__categories[key] = self.__dict__[key]
+                self.__categories[key] = Value
 
     #############
     ## GETTERS ##
