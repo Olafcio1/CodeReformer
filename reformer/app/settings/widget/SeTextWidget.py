@@ -62,26 +62,29 @@ class SeTextWidget(SettingWidget[StringValue]):
         self.__currentX = 0
 
         diff = x - self.x
-
         forX = 0
-        prev = 0
 
         for i, w in enumerate(self.__charX):
-            forX += w
+            right = forX + w
 
-            if diff >= forX:
-                if i == len(self.__charX)-1:
-                    forX -= w
+            if diff <= right:
+                mid = forX + (w/2)
 
-                self.__position = i+1
-                self.__currentX = forX
-            # elif forX - diff < prev/2 and i < len(self.__charX)-1:
-            #     self.__position = i
-            #     self.__currentX = forX
-            #     break
-            else: break
+                if diff < mid:
+                    # closer to left
+                    self.__position = i
+                    self.__currentX = forX
+                else:
+                    # closer to right
+                    self.__position = i + 1
+                    self.__currentX = right
 
-            prev = w
+                return
+
+            forX = right
+
+        self.__position = len(self.__charX)
+        self.__currentX = forX-w
 
     def mouseOut(self) -> None:
         self.__position = -1
@@ -92,14 +95,15 @@ class SeTextWidget(SettingWidget[StringValue]):
 
     def keyPressed(self, key: int, unicode: str) -> None:
         if self.isFocused():
+            print("[TextInput] [Keyboard] %s" % key)
             if key == 1073741904:
                 if self.__position > 0:
-                    self.__currentX -= self.__charX[self.__position]
+                    self.__currentX -= self.__charX[self.__position - 1]
                     self.__position -= 1
             elif key == 1073741903:
-                if self.__position < len(self.value.value)-1:
-                    self.__position += 1
+                if self.__position < len(self.value.value):
                     self.__currentX += self.__charX[self.__position]
+                    self.__position += 1
             elif unicode == '\x08':
                 if self.__position == len(self.value.value)-1:
                     self.value.value = self.value.value[:-1]
