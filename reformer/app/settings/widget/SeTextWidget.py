@@ -84,7 +84,7 @@ class SeTextWidget(SettingWidget[StringValue]):
             forX = right
 
         self.__position = len(self.__charX)
-        self.__currentX = forX-w
+        self.__currentX = forX if len(self.__charX) == 0 else forX-w
 
     def mouseOut(self) -> None:
         self.__position = -1
