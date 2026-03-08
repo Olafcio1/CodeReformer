@@ -73,11 +73,11 @@ class SeTextWidget(SettingWidget[StringValue]):
                 if i == len(self.__charX)-1:
                     forX -= w
 
-                self.__position = i
+                self.__position = i+1
                 self.__currentX = forX
             # elif forX - diff < prev/2 and i < len(self.__charX)-1:
-            #     self.__position = i+1
-            #     self.__currentX = forX-w
+            #     self.__position = i
+            #     self.__currentX = forX
             #     break
             else: break
 
@@ -92,19 +92,36 @@ class SeTextWidget(SettingWidget[StringValue]):
 
     def keyPressed(self, key: int, unicode: str) -> None:
         if self.isFocused():
-            if unicode == '\x08':
+            if key == 1073741904:
                 if self.__position > 0:
-                    self.value.value = self.value.value[:self.__position-1] + self.value.value[self.__position:]
-                    self.__currentX -= self.__charX.pop(self.__position)
+                    self.__currentX -= self.__charX[self.__position]
                     self.__position -= 1
+            elif key == 1073741903:
+                if self.__position < len(self.value.value)-1:
+                    self.__position += 1
+                    self.__currentX += self.__charX[self.__position]
+            elif unicode == '\x08':
+                if self.__position == len(self.value.value)-1:
+                    self.value.value = self.value.value[:-1]
+
+                    self.__currentX -= self.__charX.pop()
+                    self.__position -= 1
+                elif self.__position > 0:
+                    self.value.value = self.value.value[:self.__position-1] + self.value.value[self.__position:]
+
+                    self.__position -= 1
+                    self.__currentX -= self.__charX.pop(self.__position)
             elif unicode == '\r':
                 pass
             elif unicode != '':
-                self.value.value = self.value.value[:self.__position] + unicode + self.value.value[self.__position:]
+                if self.__position == len(self.value.value)-1:
+                    self.value.value += unicode
+                else:
+                    self.value.value = self.value.value[:self.__position] + unicode + self.value.value[self.__position:]
 
                 width = self.__textSize(unicode)[0]
 
-                self.__charX.insert(self.__position, width)
+                self.__charX.insert(self.__position + 1, width)
                 self.__position += 1
                 self.__currentX += width
             else:
