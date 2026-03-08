@@ -68,6 +68,18 @@ class Styleable(IContainer):
         if self.style._borderRight != None: surface.fill(self.style._borderRight, (self.x + self.width - 1, self.y, 1, self.height))
 
     ##########
+    ## SIZE ##
+    ##########
+
+    @property
+    def innerWidth(self) -> int:
+        return self.width - self.style._paddingLeft - self.style._paddingRight
+
+    @property
+    def innerHeight(self) -> int:
+        return self.height - self.style._paddingTop - self.style._paddingBottom
+
+    ##########
     ## MISC ##
     ##########
 
