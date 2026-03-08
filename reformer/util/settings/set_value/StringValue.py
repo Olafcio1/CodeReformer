@@ -27,12 +27,15 @@ class StringValue:
 
     def __init__(self, *args):
         if len(args) == 0:
+            self.value = ""
             return
         elif len(args) == 1:
             if isinstance(args[0], str):
                 self.value = args[0]
+                self.validator = None
                 return
             elif isinstance(args[0], Callable):
+                self.value = ""
                 self.validator = args[0]
                 return
         elif len(args) == 2:
