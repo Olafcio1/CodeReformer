@@ -21,3 +21,6 @@ class PickValue(Generic[T]):
     def __init__(self, defaultIndex: int, options: list[T]):
         self.options = options
         self.value = options[defaultIndex]
+
+    def copy(self) -> "PickValue[T]":
+        return PickValue[T](self.options.index(self.value), self.options)

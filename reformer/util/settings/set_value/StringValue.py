@@ -28,6 +28,7 @@ class StringValue:
     def __init__(self, *args):
         if len(args) == 0:
             self.value = ""
+            self.validator = None
             return
         elif len(args) == 1:
             if isinstance(args[0], str):
@@ -43,3 +44,6 @@ class StringValue:
             return
 
         raise Exception("No matching overload")
+
+    def copy(self) -> "StringValue":
+        return StringValue(self.value, self.validator)  # type: ignore

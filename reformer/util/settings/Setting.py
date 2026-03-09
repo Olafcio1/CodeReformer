@@ -15,3 +15,6 @@ class Setting(Generic[T]):
     def __init__(self, /, name: str, value: T) -> None:
         self.name = name
         self.value = value
+
+    def copy(self) -> "Setting[T]":
+        return Setting(self.name, self.value.copy())  # pyright: ignore[reportReturnType]

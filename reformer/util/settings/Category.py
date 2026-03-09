@@ -31,3 +31,10 @@ class Category:
                 word = False
 
         return out
+
+    def copy(self) -> "Category":
+        category = Category(self.name)
+        for key, value in self.settings.items():
+            category.settings[key] = value.copy()
+
+        return category
