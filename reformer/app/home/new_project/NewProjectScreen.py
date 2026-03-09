@@ -1,4 +1,5 @@
 import pygame
+import os
 
 from ....resources import ResourceManager
 from ....util.event import EventManager
@@ -17,7 +18,7 @@ from ....util.settings.set_value.PickValue import PickValue
 from ...settings import widget as SeWidget
 
 from .Generator import Generator
-from .GeneratorsEvent import GeneratorsEvent
+from .GeneratorsEvent import GeneratorsEvent, GeneratorType
 
 from typing import Callable
 
@@ -59,7 +60,7 @@ class NewProjectScreen(Screen):
                 x: int, y: int,
                 width: int, height: int,
                 *,
-                generator: Generator,
+                generator: GeneratorType,
                 nps: "NewProjectScreen"
         ):
             super().__init__(x, y, width, height)
@@ -67,7 +68,7 @@ class NewProjectScreen(Screen):
             self.name = generator.getName()
             self.icon = pygame.transform.smoothscale(generator.getIcon(), (min(25, self.height - 5), min(25, self.height - 5)))
 
-            self.onClick = lambda: nps.setGenerator(generator)
+            self.onClick = lambda: nps.setGenerator(generator())
 
         def renderClipped(self, surface: pygame.Surface) -> None:
             font = ResourceManager.font['/font/LEXEND.TTF']
@@ -117,11 +118,11 @@ class NewProjectScreen(Screen):
                                                 .build())
 
         baseSettings: list[Setting] = [
-            Setting(
+            SName := Setting(
                 name="Name",
                 value=StringValue("")
             ),
-            Setting(
+            SPath := Setting(
                 name="Path",
                 value=StringValue("~/CodeReformerProjects")
             )
@@ -143,15 +144,23 @@ class NewProjectScreen(Screen):
 
             self.appendSettings([*category.settings.values()])
 
-        self.formEl.addREWidget(Container(
-                                    -1, -1,
-                                    150, 30
-                                ).setText("Create", 0xcfcfcfff, ResourceManager.font['/font/LEXEND.TTF']) \
-                                 .style("""
-                                        background: 0x0e477e
-                                        border: 0x222322, 0x222322, 0x222322, 0x222322
-                                        margin_top: 5
-                                        """))
+        createBtn = Container(
+                        -1, -1,
+                        150, 30
+                    ).setText("Create", 0xcfcfcfff, ResourceManager.font['/font/LEXEND.TTF']) \
+                     .style("""
+                            background: 0x0e477e
+                            border: 0x222322, 0x222322, 0x222322, 0x222322
+                            margin_top: 5
+                            """)
+
+        def onClick(x, y, button):
+            nonlocal createBtn
+            if createBtn.isHovered(x, y):
+                generator.create(os.path.expanduser(SPath.value.value) + "/" + SName.value.value)
+
+        createBtn.mousePressed = onClick
+        self.formEl.addREWidget(createBtn)
 
     def appendSettings(self, settings: list[Setting]) -> None:
         font = ResourceManager.font['/font/LEXEND.TTF']
@@ -174,7 +183,7 @@ class NewProjectScreen(Screen):
         el.style.borderRight(0x222322)
 
         event = GeneratorsEvent()
-        generators: list[Generator] \
+        generators: list[GeneratorType] \
                   = event._GeneratorsEvent__generators  # type: ignore
                                                         # retardedahh no support in vs code
 

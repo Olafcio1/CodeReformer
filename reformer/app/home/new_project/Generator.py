@@ -1,18 +1,19 @@
 import pygame
 
 from abc import ABCMeta, abstractmethod
-from typing import Final, _GenericAlias  # type: ignore
+from typing import Final, ClassVar, Callable, TypedDict, _GenericAlias  # type: ignore
 
 from ....util.settings.Category import Category
 
+class GeneratorMetadata(TypedDict):
+    name: Callable[[], str]
+    icon: Callable[[], pygame.Surface]
+
 class Generator(metaclass=ABCMeta):
-    __name: str
-    __icon: pygame.Surface
+    __metadata__: ClassVar[GeneratorMetadata]
     __categories: Final[dict[str, Category]]
 
-    def __init__(self, name: str, icon: pygame.Surface) -> None:
-        self.__name = name
-        self.__icon = icon
+    def __init__(self) -> None:
         self.__categories = {}
 
         cls = type(self)
@@ -26,17 +27,20 @@ class Generator(metaclass=ABCMeta):
                 Type = Type.__args__[0]
 
             if issubclass(Type, Category):
-                self.__categories[key] = Value
+                Value: Category
+                self.__categories[key] = Value.copy()
 
     #############
     ## GETTERS ##
     #############
 
-    def getName(self) -> str:
-        return self.__name
+    @classmethod
+    def getName(cls) -> str:
+        return cls.__metadata__['name']()
 
-    def getIcon(self) -> pygame.Surface:
-        return self.__icon
+    @classmethod
+    def getIcon(cls) -> pygame.Surface:
+        return cls.__metadata__['icon']()
 
     def getCategories(self) -> dict[str, Category]:
         return self.__categories

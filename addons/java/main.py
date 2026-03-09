@@ -6,4 +6,4 @@ from .javagen import JavaGenerator
 class Plugin:
     @EventHandler
     def onGenerators(self, event: GeneratorsEvent) -> None:
-        event.add(JavaGenerator())
+        event.add(JavaGenerator)

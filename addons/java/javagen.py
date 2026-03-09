@@ -12,13 +12,15 @@ class JavaGenerator(Generator):
                                 groupID    = StringValue(lambda str: "/" not in str),
                                 artifactID = StringValue())
 
-    def __init__(self):
-        super().__init__("Java", ResourceManager.image['/image/generator/java.png'])
+    __metadata__ = {
+        "name": lambda: "Java",
+        "icon": lambda: ResourceManager.image['/image/generator/java.png']
+    }
 
     def create(self, path: str) -> None:
-        groupID = self.publishing.settings['groupID'].value
+        groupID = self.publishing.settings['groupID'].value.value
 
-        os.mkdir(path)
+        os.makedirs(path)
         os.makedirs(root := (path + "/src/main/java/" + groupID.replace(".", "/")))
 
         with open(root + "/Main.java", "w", encoding="utf-8") as f:
