@@ -190,6 +190,19 @@ class Container(
 
         widget._Parented__self_parent = self  # type: ignore
 
+    ####################
+    ## WIDGETS\REMOVE ##
+    ####################
+
+    @final
+    def removeChild(self, widget: IWidget) -> None:
+        self._renderables.remove(widget)
+        self._attachers.remove(widget)
+
+        self._widgets.remove(widget)
+
+        self.forceRender()
+
     ##############
     ## CHILDREN ##
     ##############

@@ -14,13 +14,8 @@ class Parented(metaclass=ABCMeta):
     def before(self, widget: "Parented") -> None:
         self.parent.insertBefore(widget, self)
 
-    def remove(self):
+    def remove(self) -> None:
         parent = self.parent
 
         if parent is not None:
-            parent._renderables.remove(self)
-            parent._attachers.remove(self)
-
-            parent._widgets.remove(self)
-
-            parent.forceRender()
+            parent.removeChild(self)
