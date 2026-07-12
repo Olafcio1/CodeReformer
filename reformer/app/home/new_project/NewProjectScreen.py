@@ -182,27 +182,42 @@ class NewProjectScreen(Screen):
         errorInserted = None
         errorElement = None
 
+        def replaceError(Id: str, text: str):
+            nonlocal errorInserted, errorElement
+
+            if errorInserted != Id:
+                if errorElement is not None:
+                    errorElement.remove()
+
+                errorElement = NewProjectScreen.ErrorSpan \
+                                               .Builder() \
+                                                   .kw(text=text) \
+                                                   .size(self.formEl.innerWidth, 20) \
+                                               .build() \
+                                               .style("""
+                                                      margin_top: 5
+                                                      """)
+
+                self._insertPrevious(self.formEl, errorElement)
+
+                errorInserted = Id
+
         def onClick(x, y, button):
             nonlocal createBtn, errorInserted, errorElement
 
             if createBtn.isHovered(x, y):
+                if SName.value.value == '':
+                    replaceError('empty', "A project name cannot be empty.")
+                    return
+
+                if SName.value.value.strip() != SName.value.value:
+                    replaceError('strip', "A project name cannot contain leading or trailing spaces.")
+                    return
+
                 baseDir = os.path.expanduser(SPath.value.value) + "/" + SName.value.value
 
                 if os.path.isdir(baseDir):
-                    if errorInserted != 'already-exists':
-                        errorElement = NewProjectScreen.ErrorSpan \
-                                                       .Builder() \
-                                                           .kw(text="A project under this name already exists.") \
-                                                           .size(self.formEl.innerWidth, 20) \
-                                                       .build() \
-                                                       .style("""
-                                                              margin_top: 5
-                                                              """)
-
-                        self._insertPrevious(self.formEl, errorElement)
-
-                        errorInserted = 'already-exists'
-
+                    replaceError('already-exists', "A project under this name already exists.")
                     return
 
                 if errorInserted is not None:
