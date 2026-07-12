@@ -12,10 +12,13 @@ from ....lib.screen.widget.Widget import Widget
 from ....lib.screen.widget.Container import Container
 from ....lib.screen.widget.ClippedWidget import ClippedWidget
 
+from ....lib.static.StaticRendering import StaticRendering
+
 from ....util.settings.Setting import Setting
 from ....util.settings.set_value.StringValue import StringValue
 from ....util.settings.set_value.PickValue import PickValue
 
+from ...project.ProjectScreen import ProjectScreen
 from ...settings import widget as SeWidget
 
 from .Generator import Generator
@@ -225,6 +228,7 @@ class NewProjectScreen(Screen):
                     errorInserted = None
 
                 generator.create(baseDir)
+                StaticRendering.setScreen(ProjectScreen(baseDir))
 
         createBtn.mousePressed = onClick
         self.formEl.addREWidget(createBtn)
