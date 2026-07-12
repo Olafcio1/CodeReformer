@@ -113,7 +113,6 @@ class Container(
             widget.render(sub)
 
         super().applyPost(surface)
-        pygame.display.flip()
 
     def renderChanged(self, surface: pygame.Surface) -> None:
         if self.pendingRerender():
@@ -122,9 +121,6 @@ class Container(
             sub = self._clipsub(surface)
             for widget in self._renderables:
                 widget.renderChanged(sub)
-
-            if self.anyChanged():
-                pygame.display.flip()
 
     ###########
     ## MOUSE ##
