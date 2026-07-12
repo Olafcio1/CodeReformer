@@ -75,11 +75,19 @@ class Container(
         self._attachers = []
         self._widgets = []
 
+        self._forceRerender = False
+
     ##########################
     ## SUB PENDING RENDERER ##
     ##########################
 
+    _forceRerender: bool
+
     def pendingRerender(self) -> bool:
+        if self._forceRerender:
+            self._forceRerender = False
+            return True
+
         if super().pendingRerender():
             return True
 
@@ -88,6 +96,9 @@ class Container(
                 return True
 
         return False
+
+    def forceRender(self) -> None:
+        self._forceRerender = True
 
     ###############
     ## RENDERING ##

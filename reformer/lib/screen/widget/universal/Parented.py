@@ -10,3 +10,14 @@ class Parented(metaclass=ABCMeta):
     @property
     def parent(self):
         return self.__self_parent
+
+    def remove(self):
+        parent = self.parent
+
+        if parent is not None:
+            parent._renderables.remove(self)
+            parent._attachers.remove(self)
+
+            parent._widgets.remove(self)
+
+            parent.forceRender()
