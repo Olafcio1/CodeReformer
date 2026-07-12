@@ -198,7 +198,7 @@ class NewProjectScreen(Screen):
                                                       margin_top: 5
                                                       """)
 
-                self._insertPrevious(self.formEl, errorElement)
+                createBtn.before(errorElement)
 
                 errorInserted = Id
 
@@ -228,14 +228,6 @@ class NewProjectScreen(Screen):
 
         createBtn.mousePressed = onClick
         self.formEl.addREWidget(createBtn)
-
-    def _insertPrevious(self, parent: Container, widget: Widget) -> None:
-        parent._renderables.insert(-1, widget)
-        parent._attachers.insert(-1, widget)
-
-        parent._widgets.insert(-1, widget)
-
-        widget._Parented__self_parent = parent  # type: ignore
 
     def appendSettings(self, settings: list[Setting]) -> None:
         font = ResourceManager.font['/font/LEXEND.TTF']
