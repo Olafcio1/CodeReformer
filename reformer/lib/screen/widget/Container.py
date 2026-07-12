@@ -171,6 +171,25 @@ class Container(
 
         widget._Parented__self_parent = self  # type: ignore
 
+    ####################
+    ## WIDGETS\INSERT ##
+    ####################
+
+    def insertRenderable(self, renderable: IRenderable, index: int) -> None:
+        self._renderables.insert(index, renderable)
+
+    def insertAttacher(self, attacher: IAttacher, index: int) -> None:
+        self._attachers.insert(index, attacher)
+
+    @final
+    def insertBefore(self, widget: IWidget, before: IWidget) -> None:
+        self.insertRenderable(widget, self._renderables.index(before))
+        self.insertAttacher(widget, self._attachers.index(before))
+
+        self._widgets.insert(self._widgets.index(before), widget)
+
+        widget._Parented__self_parent = self  # type: ignore
+
     ##############
     ## CHILDREN ##
     ##############
