@@ -8,6 +8,7 @@ from ....lib.TextUtil import TextUtil
 
 from ....lib.screen.Screen import Screen
 
+from ....lib.screen.widget.Widget import Widget
 from ....lib.screen.widget.Container import Container
 from ....lib.screen.widget.ClippedWidget import ClippedWidget
 
@@ -109,6 +110,30 @@ class NewProjectScreen(Screen):
 
             font.set_bold(False)
 
+    class ErrorSpan(ClippedWidget):
+        text: str
+
+        def __init__(
+                self,
+                x: int, y: int,
+                width: int, height: int,
+                *,
+                text: str
+        ):
+            super().__init__(x, y, width, height)
+            self.text = text
+
+        def renderClipped(self, surface: pygame.Surface) -> None:
+            font = ResourceManager.font['/font/LEXEND.TTF']
+            font.set_underline(True)
+
+            surface.blit(pygame.transform.smoothscale_by(
+                font.render(self.text, True, 0xff8c8cff),
+                .8
+            ), (0, 0))
+
+            font.set_underline(False)
+
     def setGenerator(self, generator: Generator) -> None:
         self.formEl.clear()
         self.formEl.addREWidget(NewProjectScreen.ContentTitle \
@@ -154,13 +179,48 @@ class NewProjectScreen(Screen):
                             margin_top: 5
                             """)
 
+        errorInserted = None
+        errorElement = None
+
         def onClick(x, y, button):
-            nonlocal createBtn
+            nonlocal createBtn, errorInserted, errorElement
+
             if createBtn.isHovered(x, y):
-                generator.create(os.path.expanduser(SPath.value.value) + "/" + SName.value.value)
+                baseDir = os.path.expanduser(SPath.value.value) + "/" + SName.value.value
+
+                if os.path.isdir(baseDir):
+                    if errorInserted != 'already-exists':
+                        errorElement = NewProjectScreen.ErrorSpan \
+                                                       .Builder() \
+                                                           .kw(text="A project under this name already exists.") \
+                                                           .size(self.formEl.innerWidth, 20) \
+                                                       .build() \
+                                                       .style("""
+                                                              margin_top: 5
+                                                              """)
+
+                        self._insertPrevious(self.formEl, errorElement)
+
+                        errorInserted = 'already-exists'
+
+                    return
+
+                if errorInserted is not None:
+                    errorElement.remove()
+                    errorInserted = None
+
+                generator.create(baseDir)
 
         createBtn.mousePressed = onClick
         self.formEl.addREWidget(createBtn)
+
+    def _insertPrevious(self, parent: Container, widget: Widget) -> None:
+        parent._renderables.insert(-1, widget)
+        parent._attachers.insert(-1, widget)
+
+        parent._widgets.insert(-1, widget)
+
+        widget._Parented__self_parent = parent  # type: ignore
 
     def appendSettings(self, settings: list[Setting]) -> None:
         font = ResourceManager.font['/font/LEXEND.TTF']
