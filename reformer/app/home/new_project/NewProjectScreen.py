@@ -55,7 +55,19 @@ class NewProjectScreen(Screen):
 
     def keyPressed(self, key: int, unicode: str) -> None:
         if key == pygame.K_ESCAPE:
-            StaticRendering.setHomeScreen()
+            if len(self.formEl._widgets) > 0:
+                self.formEl._widgets.clear()
+
+                self.formEl._renderables.clear()
+                self.formEl._attachers.clear()
+
+                for gen in self.gensEl._widgets:
+                    gen.active = False
+
+                self.formEl.forceRender()
+            else:
+                StaticRendering.setHomeScreen()
+
             return
 
         super().keyPressed(key, unicode)
@@ -64,6 +76,7 @@ class NewProjectScreen(Screen):
         name: str
         icon: pygame.Surface
 
+        active: bool
         onClick: Callable[[], None]
 
         def __init__(
@@ -79,7 +92,17 @@ class NewProjectScreen(Screen):
             self.name = generator.getName()
             self.icon = pygame.transform.smoothscale(generator.getIcon(), (min(25, self.height - 5), min(25, self.height - 5)))
 
-            self.onClick = lambda: nps.setGenerator(generator())
+            def onClick():
+                nonlocal nps, generator
+
+                if not self.active:
+                    nps.setGenerator(generator())
+
+                    for widget in nps.gensEl._widgets:
+                        widget.active = widget == self
+
+            self.onClick = onClick
+            self.active = False
 
         def renderClipped(self, surface: pygame.Surface) -> None:
             font = ResourceManager.font['/font/LEXEND.TTF']
@@ -89,7 +112,10 @@ class NewProjectScreen(Screen):
                 surface.fill(0x393a39)
 
             surface.blit(self.icon, (15, (self.height - self.icon.get_height())/2))
-            surface.blit(font.render(self.name, True, 0x5f5f5fff), (40, (self.height - size[1])/2))
+            surface.blit(font.render(self.name, True, 0x5f5f5fff), (45, (self.height - size[1])/2))
+
+            if self.active:
+                pygame.draw.line(surface, 0x5f5f5f, (self.width - 10, self.height/2 - 6), (self.width - 10, self.height/2 + 5))
 
         def mousePressed(self, x: int, y: int, button: int) -> None:
             if self.isHovered():
