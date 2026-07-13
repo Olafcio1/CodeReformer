@@ -91,7 +91,7 @@ class HomeScreen(Screen):
         self.addREWidget(HomeScreen.Logo(
             (int) (self.width/14),
             (int) (self.height/7),
-            (int) (1024/4.4), (int) (403/4.4)
+            (int) (1024/4.4), (int) (383/4.4)
         ))
 
         self.addREWidget(btns := Container(
