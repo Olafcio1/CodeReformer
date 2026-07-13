@@ -53,6 +53,13 @@ class NewProjectScreen(Screen):
 
         self.addREWidget(window)
 
+    def keyPressed(self, key: int, unicode: str) -> None:
+        if key == pygame.K_ESCAPE:
+            StaticRendering.setHomeScreen()
+            return
+
+        super().keyPressed(key, unicode)
+
     class GeneratorButton(ClippedWidget):
         name: str
         icon: pygame.Surface

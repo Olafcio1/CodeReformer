@@ -128,3 +128,5 @@ class HomeScreen(Screen):
         @classmethod
         def openSettings(cls) -> None:
             StaticRendering.setScreen(SettingsScreen())
+
+StaticRendering.setHomeScreen = lambda: StaticRendering.setScreen(HomeScreen())
