@@ -19,8 +19,13 @@ class HomeScreen(Screen):
     class Background(Initializable):
         def render(self, surface: pygame.Surface) -> None:
             super().render(surface)
-            surface.fill(0x333433)
-            #pygame.display.flip()
+
+            grad = pygame.Surface((1, 2))
+            grad.set_at((0, 0), 0x252625)
+            grad.set_at((0, 1), 0x111211)
+            grad = pygame.transform.smoothscale(grad, surface.get_size())
+
+            surface.blit(grad, (0, 0))
 
     class Logo(ClippedWidget):
         def renderClipped(self, surface: pygame.Surface) -> None:
@@ -56,15 +61,23 @@ class HomeScreen(Screen):
             # however, would a red IDE look good?
             # an orange one does (imo) - i use `Bearded Theme Coffee` for `VS Code`
 
-            surface.fill(0x2a2a2a, (0, 0, self.width, (int) (self.height / 2)))
-            surface.fill(0x2d2d2d, (0, (int) (self.height / 2), self.width, (int) (self.height / 2)))
+            rad = 15
 
-            pygame.draw.rect(surface, 0x202120, self.get_clipped_rect(), 1)
+            for y in range(self.height):
+                r = 0
+
+                if y <= rad:
+                    r = rad - y
+                elif y >= self.height - rad:
+                    r = self.height - y  # The logic here is broken, but it looks good, so...
+
+                for x in range(r, self.width - r*2):
+                    surface.set_at((x, y), 0x2a2a2a)
 
             font = ResourceManager.font['/font/LEXEND.TTF']
             size = font.size(self.text)
 
-            surface.blit(font.render(self.text, True, 0x59595fff), ((self.width - size[0])/2, (self.height - size[1])/2))
+            surface.blit(font.render(self.text, True, 0x69696fff if self.isHovered() else 0x59595fff), ((self.width - size[0])/2, (self.height - size[1])/2))
 
         def getText(self) -> str:
             return self.text
