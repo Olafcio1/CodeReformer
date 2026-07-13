@@ -1,4 +1,5 @@
 import pygame
+import time
 
 from ..SettingWidget import SettingWidget
 
@@ -26,8 +27,14 @@ class SeTextWidget(SettingWidget[StringValue]):
         self.__charX = [self.__textSize(ch)[0] for ch in self.value.value]
         self.__currentX = -1
 
+        self.__lastUpdate = -1
+        self.__state = 0
+
     def __textSize(self, text: str) -> tuple[int, int]:
         return TextUtil.size(text, self._font)
+
+    __lastUpdate: int
+    __state: int
 
     def renderWidget(self, surface: pygame.Surface) -> None:
         super().renderWidget(surface)
@@ -36,7 +43,33 @@ class SeTextWidget(SettingWidget[StringValue]):
         surface.blit(self._font.render(self.value.value, True, 0xa2a2a2ff), (self.x + self.valueX, self.y))
 
         if self.isFocused():
-            surface.fill(0x555555, (self.x + self.valueX + self.__currentX, self.y, 2, self.height))
+            if self.__state != 1:
+                surface.fill(0x555555, (self.x + self.valueX + self.__currentX, self.y, 2, self.height))
+
+            if time.time() - self.__lastUpdate > .6:
+                self.__state = 1 if self.__state == 0 else 0
+                self.__lastUpdate = time.time()
+        else:
+            self.__state = -1
+            self.__lastUpdate = time.time() - .3
+
+    def refreshTime(self) -> float:
+        if self.isFocused():
+            return .1
+        else:
+            return 1
+
+    def pendingRerender(self) -> bool:
+        if super().pendingRerender():
+            return True
+
+        if \
+            self.isFocused() and \
+            time.time() - self.__lastUpdate >= .6 \
+        :
+            return True
+
+        return False
 
     ###########
     ## MOUSE ##
@@ -73,6 +106,7 @@ class SeTextWidget(SettingWidget[StringValue]):
 
     def mouseOut(self) -> None:
         self.__position = -1
+        self._Attacher__interacted = True
 
     ##############
     ## KEYBOARD ##
@@ -81,6 +115,7 @@ class SeTextWidget(SettingWidget[StringValue]):
     def keyPressed(self, key: int, unicode: str) -> None:
         if self.isFocused():
             print("[TextInput] [Keyboard] %s" % key)
+
             if key == pygame.K_LEFT:
                 if self.__position > 0:
                     self.__currentX -= self.__charX[self.__position - 1]

@@ -13,3 +13,7 @@ class StaticRendering:
     @staticmethod
     def setScreen(value: Screen) -> None:
         ...
+
+    @staticmethod
+    def renderImmediately() -> None:
+        ...

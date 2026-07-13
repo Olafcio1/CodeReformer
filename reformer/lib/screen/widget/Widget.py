@@ -1,4 +1,5 @@
 import pygame
+import time
 
 from .Attacher import Attacher
 from .Initializable import Initializable
@@ -14,6 +15,7 @@ from ..iwidget.IWidget import IWidget
 
 from abc import ABCMeta, abstractmethod
 from typing import final, Self
+from threading import Thread
 
 class Widget(
         Attacher, Initializable,
@@ -42,6 +44,30 @@ class Widget(
         Hoverable.__init__(self)
         Initializable.__init__(self)
         MiniStyleable.__init__(self)
+
+    ##################
+    ## AUTO REFRESH ##
+    ##################
+
+    def onAttached(self) -> None:
+        if (refresh := self.refreshTime()) is not None:
+            parent = self.parent
+
+            def refresher():
+                nonlocal self, refresh, parent
+
+                time.sleep(refresh)
+
+                while True:
+                    if self.parent != parent:
+                        break
+
+                    if self.pendingRerender():
+                        pygame.event.post(pygame.event.Event(0))
+
+                    time.sleep(self.refreshTime())
+
+            Thread(target=refresher, daemon=True).start()
 
     #############
     ## GETTERS ##
@@ -77,6 +103,9 @@ class Widget(
 
     def pendingRerender(self) -> bool:
         return super().pendingRerender() or self._interacted()
+
+    def refreshTime(self) -> int|None:
+        return None
 
     ##############
     ## ABSTRACT ##

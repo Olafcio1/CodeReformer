@@ -1,6 +1,13 @@
 from typing import Protocol
 
 class IAttacher(Protocol):
+    ############
+    ## ATTACH ##
+    ############
+
+    def onAttached(self) -> None:
+        pass
+
     ###########
     ## MOUSE ##
     ###########

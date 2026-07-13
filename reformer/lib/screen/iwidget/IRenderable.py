@@ -15,3 +15,6 @@ class IRenderable(Protocol):
 
     def anyChanged(self) -> bool:
         ...
+
+    def refreshTime(self) -> int|None:
+        ...

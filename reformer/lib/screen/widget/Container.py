@@ -161,15 +161,16 @@ class Container(
 
     def addAttacher(self, attacher: IAttacher) -> None:
         self._attachers.append(attacher)
+        attacher.onAttached()
 
     @final
     def addREWidget(self, widget: IWidget) -> None:
+        widget._Parented__self_parent = self  # type: ignore
+
         self.addRenderable(widget)
         self.addAttacher(widget)
 
         self._widgets.append(widget)
-
-        widget._Parented__self_parent = self  # type: ignore
 
     ####################
     ## WIDGETS\INSERT ##
@@ -180,15 +181,16 @@ class Container(
 
     def insertAttacher(self, attacher: IAttacher, index: int) -> None:
         self._attachers.insert(index, attacher)
+        attacher.onAttached()
 
     @final
     def insertBefore(self, widget: IWidget, before: IWidget) -> None:
+        widget._Parented__self_parent = self  # type: ignore
+
         self.insertRenderable(widget, self._renderables.index(before))
         self.insertAttacher(widget, self._attachers.index(before))
 
         self._widgets.insert(self._widgets.index(before), widget)
-
-        widget._Parented__self_parent = self  # type: ignore
 
     ####################
     ## WIDGETS\REMOVE ##
@@ -200,6 +202,8 @@ class Container(
         self._attachers.remove(widget)
 
         self._widgets.remove(widget)
+
+        widget._Parented__self_parent = None
 
         self.forceRender()
 

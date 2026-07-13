@@ -24,6 +24,8 @@ class Rendering:
         StaticRendering.getScreen = lambda: self.screen
         StaticRendering.setScreen = setter
 
+        StaticRendering.renderImmediately = self.render
+
         PluginScanner.scan("addons")
 
         self.surface = pygame.display.get_surface()
@@ -46,10 +48,14 @@ class Rendering:
     def mainloop(self):
         while True:
             event = pygame.event.wait()
+
             if event.type == pygame.ACTIVEEVENT:
                 self.render()
             elif event.type == pygame.QUIT:
                 break
+            ### AUTOREFRESH ###
+            elif event.type == pygame.NOEVENT:
+                self.render()
             ### KEYBOARD ###
             elif event.type == pygame.KEYDOWN:
                 self.screen.keyPressed(event.key, event.unicode)

@@ -11,6 +11,13 @@ class Attacher(IAttacher, metaclass=ABCMeta):
         self.__interacted = False
         self.__unhovered = False
 
+    ############
+    ## ATTACH ##
+    ############
+
+    def onAttached(self) -> None:
+        pass
+
     ###########
     ## MOUSE ##
     ###########
