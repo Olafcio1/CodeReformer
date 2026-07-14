@@ -17,6 +17,7 @@ from ....lib.static.StaticRendering import StaticRendering
 from ....util.settings.Setting import Setting
 from ....util.settings.set_value.StringValue import StringValue
 from ....util.settings.set_value.PickValue import PickValue
+from ....util.settings.set_value.BoolValue import BoolValue
 
 from ...project.ProjectScreen import ProjectScreen
 from ...settings import widget as SeWidget
@@ -274,7 +275,8 @@ class NewProjectScreen(Screen):
             self.formEl.addREWidget(
                 {
                     StringValue: SeWidget.TextInput,
-                    PickValue: SeWidget.PickSelect
+                    PickValue: SeWidget.PickSelect,
+                    BoolValue: SeWidget.BoolCheckbox
                 }[type(setting.value)] \
                                        .Builder()
                                            .kw(setting=setting, valueX=valueX)
