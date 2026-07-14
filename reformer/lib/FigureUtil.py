@@ -15,33 +15,33 @@ class FigureUtil:
         startY = pos[1]
 
         endY = startY + height - 3
+        startY += 3
 
         for r in range(3):
             x = startX + r
-            rY = 3 - r
 
-            surface.fill(color, (x, startY + rY, width - r, 1))
-            surface.fill(color, (startX, endY - rY, width - r, 1))
+            surface.fill(color, (x, startY - r, width - r, 1))
+            surface.fill(color, (startX, endY + r, width - r, 1))
 
-        for y in range(startY + 3, endY - 3):
+        for y in range(startY, endY):
             surface.fill(color, (startX, y, width, 1))
 
     @staticmethod
     def roundedRect_stroke(surface: pygame.Surface, color: int, pos: tuple[int, int, int, int]) -> None:
-        pygame.draw.rect(surface, color, pos, 1)
-
         x, y, \
         w, h = pos
 
-        for i in range(3):
-            # Left-Top
-            surface.set_at((x + i, y), 0x333433)
-            surface.set_at((x, y + i), 0x333433)
+        surface.fill(color, (x + 3, y, w - 3, 1))
 
-            surface.set_at((x + (3 - i), y + i), color)
+        for i in range(h):
+            yVal = y + i
+
+            # Left-Top
+            lt = max(0, 3 - i)
+            surface.set_at((x + lt, yVal), color)
 
             # Right-Bottom
-            surface.set_at((x + w - 1 - i, y + h - 1), 0x333433)
-            surface.set_at((x + w - 1, y + h - 1 - i), 0x333433)
+            rb = max(0, i - (h - 3))
+            surface.set_at((x + w - 1 - rb, yVal), color)
 
-            surface.set_at((x + w - 1 - i, y + h - (3 - i + 1)), color)
+        surface.fill(color, (x, y + h, w - 3, 1))
