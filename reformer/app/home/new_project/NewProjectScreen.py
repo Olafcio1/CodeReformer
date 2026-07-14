@@ -18,6 +18,7 @@ from ....util.settings.Setting import Setting
 from ....util.settings.set_value.StringValue import StringValue
 from ....util.settings.set_value.PickValue import PickValue
 from ....util.settings.set_value.BoolValue import BoolValue
+from ....util.settings.set_value.SelectValue import SelectValue
 
 from ...project.ProjectScreen import ProjectScreen
 from ...settings import widget as SeWidget
@@ -276,7 +277,8 @@ class NewProjectScreen(Screen):
                 {
                     StringValue: SeWidget.TextInput,
                     PickValue: SeWidget.PickSelect,
-                    BoolValue: SeWidget.BoolCheckbox
+                    BoolValue: SeWidget.BoolCheckbox,
+                    SelectValue: SeWidget.SelectDropdown
                 }[type(setting.value)] \
                                        .Builder()
                                            .kw(setting=setting, valueX=valueX)

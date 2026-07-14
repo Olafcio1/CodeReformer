@@ -35,7 +35,9 @@ class SettingWidget(Widget, Generic[V], metaclass=ABCMeta):
 
         self.valueX = valueX + 10
 
-        self._font = ResourceManager.font['/font/LEXEND.TTF']
+        self._font      = \
+        self._fontTitle = ResourceManager.font['/font/LEXEND.TTF']
+
         self.__focused = False
 
         self.init()
@@ -45,7 +47,7 @@ class SettingWidget(Widget, Generic[V], metaclass=ABCMeta):
 
     @abstractmethod
     def renderWidget(self, surface: Surface) -> None:
-        surface.blit(self._font.render(self.name, True, 0xafafafff), (self.x, self.y))
+        surface.blit(self._fontTitle.render(self.name, True, 0xafafafff), (self.x, self.y))
 
     @final
     def mousePressed(self, x: int, y: int, button: int) -> None:
