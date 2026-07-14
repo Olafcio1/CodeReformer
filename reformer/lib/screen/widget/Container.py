@@ -239,6 +239,9 @@ class Container(
     ## CHILDREN ##
     ##############
 
+    def child(self, index: int) -> IWidget:
+        return self._widgets[index]
+
     def clear(self) -> None:
         self._renderables = []
         self._attachers = []
