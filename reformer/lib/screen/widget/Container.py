@@ -201,6 +201,17 @@ class Container(
         attacher.onAttached()
 
     @final
+    def insert(self, widget: IWidget, index: int) -> None:
+        widget._Parented__self_parent = self  # type: ignore
+
+        before = self._widgets[index]
+
+        self.insertRenderable(widget, self._renderables.index(before))
+        self.insertAttacher(widget, self._attachers.index(before))
+
+        self._widgets.insert(index, widget)
+
+    @final
     def insertBefore(self, widget: IWidget, before: IWidget) -> None:
         widget._Parented__self_parent = self  # type: ignore
 
