@@ -15,13 +15,22 @@ from .universal.Hoverable import Hoverable
 from .composition.style.Styleable import Styleable
 
 from abc import ABCMeta
-from typing import Self, final, overload
+from typing import TypedDict, NotRequired, Literal, Unpack, Self, final, overload
 
-TextArgs = tuple[
+TextTuple = tuple[
                 str,
                 pygame.color.Color | tuple[int, int, int] | tuple[int, int, int, int] | int,
                 pygame.font.Font
 ]
+
+class Text(TypedDict):
+    text: str
+    color: int
+    font: pygame.font.Font
+    align: NotRequired[Literal["left"] | Literal["center"]]
+
+TextArgs = TextTuple | tuple[Text]
+TextArg  = TextTuple | Text
 
 class Container(
         Initializable, Styleable,
@@ -227,7 +236,7 @@ class Container(
     def getText(self) -> str:
         return self.text
 
-    def setText(self, *value: *TextArgs) -> Self:
+    def setText(self, *value: Unpack[TextArgs]) -> Self:
         self.text = value
         return self
 
@@ -245,16 +254,29 @@ class Container(
         return value
 
     @text.setter
-    def text(self, args: TextArgs) -> None:
-        value, color, font = args
+    def text(self, args: TextArg) -> None:
+        if isinstance(args, tuple):
+            value, color, font = args
+            align = 'center'
+        else:
+            value = args['text']
+            color = args['color']
+            font  = args['font']
+            align = args.get('align', "center")
 
         class text_widget(Widget):
             __parent = self
 
             def __init__(self):
                 size = font.size(value)
+
+                if align == 'center':
+                    x = (self.__parent.width - size[0]) / 2
+                else:
+                    x = 0
+
                 super().__init__(
-                    (int) ((self.__parent.width - size[0])/2),
+                    (int) (x),
                     (int) ((self.__parent.height - size[1]) / 2),
                     *size
                 )
