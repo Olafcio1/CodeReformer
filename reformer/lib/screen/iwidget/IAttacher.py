@@ -6,7 +6,7 @@ class IAttacher(Protocol):
     ############
 
     def onAttached(self) -> None:
-        pass
+        ...
 
     ###########
     ## MOUSE ##

@@ -139,6 +139,13 @@ class Container(
             for widget in self._renderables:
                 widget.renderChanged(sub)
 
+    ############
+    ## ATTACH ##
+    ############
+
+    def onAttached(self) -> None:
+        pass
+
     ###########
     ## MOUSE ##
     ###########
