@@ -1,5 +1,6 @@
 import os
 import string
+import subprocess
 
 from reformer.resources import ResourceManager
 
@@ -9,6 +10,7 @@ from reformer.util.settings.Category import Category
 from reformer.util.settings.set_value.StringValue import StringValue
 from reformer.util.settings.set_value.BoolValue import BoolValue
 from reformer.util.settings.set_value.PickValue import PickValue
+from reformer.util.settings.set_value.SelectValue import SelectValue
 
 class CSharpGenerator(Generator):
     general = Category("general",
@@ -20,12 +22,26 @@ class CSharpGenerator(Generator):
 
     compiling = Category("compiling",
                                outputType = PickValue(0, [".exe", ".dll"]),
-                               **{".NET version": PickValue(0, ["net10.0"])})
+                               **{".NET version": SelectValue(0, ["-"])})
 
     __metadata__ = {
         "name": lambda: "C#",
         "icon": lambda: ResourceManager.image['/image/generator/csharp.png']
     }
+
+    def __init__(self):
+        super().__init__()
+
+        SDKs = []
+
+        ret = subprocess.check_output("dotnet --list-sdks", encoding='utf-8')
+        lines = ret.splitlines()
+
+        for line in lines:
+            SDKs.append("SDK %s" % line[:line.index(" ")])
+
+        self.compiling.settings['.NET version'].value.options = SDKs
+        self.compiling.settings['.NET version'].value.value = SDKs[-1]
 
     def create(self, path: str, name: str) -> None:
         namespace = self.general.settings['namespace'].value.value
