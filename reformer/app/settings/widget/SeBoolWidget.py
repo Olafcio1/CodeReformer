@@ -6,11 +6,11 @@ from ....lib.TextUtil import TextUtil
 from ....lib.FigureUtil import FigureUtil
 
 from ....resources import ResourceManager
-from ....util.settings.set_value.PickValue import PickValue
+from ....util.settings.set_value.BoolValue import BoolValue
 
 from typing import Final
 
-class SeBoolWidget(SettingWidget[PickValue]):
+class SeBoolWidget(SettingWidget[BoolValue]):
     """
     Bool checkbox widget.
 
