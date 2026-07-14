@@ -16,19 +16,22 @@ class Category:
     @staticmethod
     def __humanize(name: str) -> str:
         out = ""
-        word = True
         lastUpper = True
+        first = True
 
         for ch in name:
-            if ch.isupper() != lastUpper:
-                if not word:
-                    out += " "
-
+            if first:
                 out += ch.upper()
-                lastUpper = ch.isupper()
+                first = False
+
+                continue
+            elif ch.isupper() and not lastUpper:
+                out += " "
+                out += ch.upper()
             else:
                 out += ch
-                word = False
+
+            lastUpper = ch.isupper()
 
         return out
 
