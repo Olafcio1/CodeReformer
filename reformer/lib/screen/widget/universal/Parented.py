@@ -11,6 +11,9 @@ class Parented(metaclass=ABCMeta):
     def parent(self):
         return self.__self_parent
 
+    def appendTo(self, container: IContainer) -> None:
+        container.addREWidget(self)
+
     def before(self, widget: "Parented") -> None:
         self.parent.insertBefore(widget, self)
 
