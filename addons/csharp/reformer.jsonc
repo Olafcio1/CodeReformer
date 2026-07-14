@@ -1,0 +1,16 @@
+{
+    // "$schema": "extension-manifest.json",  //TODO: 1. Write the schema; 2. Host it on olafcio1.github.io
+    "name": "C# Language Support",
+    "version": 1,
+    "version_name": "alpha 1m26/7",
+    "description": "Adds C# language support, generators and more.",
+    "resources": [
+        "./assets"
+    ],
+    "scripts": [
+        {
+            "type": "plugin",
+            "value": "./main.py"
+        }
+    ]
+}
