@@ -31,8 +31,8 @@ class SeBoolWidget(SettingWidget[BoolValue]):
 
         if self.value.value:
             # Checkmark
-            pygame.draw.line(surface, 0x2c2c2c, (x + w/4, y + h/2.5 + 3), (x + w/2, y + h/2 + 3))
-            pygame.draw.line(surface, 0x2c2c2c, (x + w/1.35, y + h/6 + 3), (x + w/2, y + h/2 + 3))
+            pygame.draw.line(surface, 0x2c2c2c, (x + w/4, y + h/2.5 + 3), (x + w/2, y + h/2 + 3), 2)
+            pygame.draw.line(surface, 0x2c2c2c, (x + w/1.35, y + h/6 + 3), (x + w/2, y + h/2 + 3), 2)
 
     ###########
     ## MOUSE ##
