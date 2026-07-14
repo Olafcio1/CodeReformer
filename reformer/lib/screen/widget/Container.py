@@ -117,6 +117,9 @@ class Container(
     def forceRender(self) -> None:
         self._forceRerender = True
 
+    def refreshTime(self) -> int|None:
+        return None
+
     ###############
     ## RENDERING ##
     ###############
