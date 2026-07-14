@@ -62,6 +62,14 @@ class Container(
 
             self.width = width
             self.height = height
+        elif len(params) == 2:
+            width, height = params
+
+            self.x = 0
+            self.y = 0
+
+            self.width = width
+            self.height = height
         elif len(params) == 0:
             self.x = 0
             self.y = 0
