@@ -261,7 +261,7 @@ class NewProjectScreen(Screen):
                     errorElement.remove()
                     errorInserted = None
 
-                generator.create(baseDir)
+                generator.create(baseDir, SName.value.value)
                 StaticRendering.setScreen(ProjectScreen(baseDir))
 
         createBtn.mousePressed = onClick

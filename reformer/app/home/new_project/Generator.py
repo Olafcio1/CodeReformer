@@ -54,5 +54,5 @@ class Generator(metaclass=ABCMeta):
     ##############
 
     @abstractmethod
-    def create(self, path: str) -> None:
+    def create(self, path: str, name: str) -> None:
         ...

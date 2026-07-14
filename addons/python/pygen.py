@@ -16,7 +16,7 @@ class PythonGenerator(Generator):
         "icon": lambda: ResourceManager.image['/image/generator/python.png']
     }
 
-    def create(self, path: str) -> None:
+    def create(self, path: str, name: str) -> None:
         useSrcModel = self.model.settings["use 'src' folder"].value.value
 
         if useSrcModel:

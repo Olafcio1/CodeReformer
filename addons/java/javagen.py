@@ -17,7 +17,7 @@ class JavaGenerator(Generator):
         "icon": lambda: ResourceManager.image['/image/generator/java.png']
     }
 
-    def create(self, path: str) -> None:
+    def create(self, path: str, name: str) -> None:
         groupID = self.publishing.settings['groupID'].value.value
 
         os.makedirs(path)
