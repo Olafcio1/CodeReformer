@@ -26,6 +26,8 @@ class ResourceManager:
                     cls.image[subRel] = pygame.image.load(sub)
                 elif fn.lower().endswith((".ttf", ".otf")):
                     cls.font[subRel] = pygame.font.Font(sub, 16)
+                    cls.font[subRel + ":-1"] = pygame.font.Font(sub, 15)
+                    cls.font[subRel + ":-2"] = pygame.font.Font(sub, 14)
                 else:
                     print("[ResourceManager/WARN] Unrecognized file %r" % sub)
             elif os.path.isdir(sub):
