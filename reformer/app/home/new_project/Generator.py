@@ -28,7 +28,11 @@ class Generator(metaclass=ABCMeta):
 
             if issubclass(Type, Category):
                 Value: Category
-                self.__categories[key] = Value.copy()
+                copy = Value.copy()
+
+                self.__categories[key] = copy
+
+                setattr(self, key, copy)
 
     #############
     ## GETTERS ##
