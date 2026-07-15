@@ -212,7 +212,7 @@ class HomeScreen(Screen):
                 if ch.isupper():
                     lastUp = ch
 
-            if lastUp == "":
+            if lastUp == iconText:
                 lastUp = proj[-1]
 
             iconText += lastUp
