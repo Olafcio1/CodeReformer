@@ -153,8 +153,15 @@ class Container(
     ## MOUSE ##
     ###########
 
+    __lastHoverState: bool = False
+
     def mouseMoved(self, x: int, y: int) -> None:
         super().mouseMoved(x, y)
+
+        hoverState = self.isHovered()
+        if hoverState != self.__lastHoverState:
+            self.__lastHoverState = hoverState
+            self.forceRender()
 
         for widget in self._attachers:
             widget.mouseMoved(x - self.x, y - self.y)
