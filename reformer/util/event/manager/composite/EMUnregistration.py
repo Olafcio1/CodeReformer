@@ -4,12 +4,11 @@ from ..EventTarget import EventTarget
 from ..IEventManager import IEventManager
 
 class EMUnregistration(IEventManager):
-    @classmethod
-    def unregister(cls, target: EventTarget) -> None:
+    def unregister(self, target: EventTarget) -> None:
         if isinstance(method := target, Callable):
-            event = cls._getEvent(method)
-            if event in cls._listeners:
-                cls._listeners[event].remove(method)
+            event = self._getEvent(method)
+            if event in self._listeners:
+                self._listeners[event].remove(method)
             else:
                 print("[EventManager/WARN] Failed to unregister %s(%s)" % (target, event.__name__))
         elif isinstance(obj := target, object):
@@ -19,6 +18,6 @@ class EMUnregistration(IEventManager):
 
             for m in methods.values():
                 if isinstance(m, Callable) and hasattr(m, '__eventhandler__'):
-                    cls.unregister(m)
+                    self.unregister(m)
         else:
             raise Exception("No matching overload")

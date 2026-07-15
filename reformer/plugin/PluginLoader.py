@@ -4,8 +4,8 @@ import os
 
 from .PluginManifest import PluginManifest
 
-from ..util.event import EventManager
 from ..packs import Pack
+from ..events import ReformerEvents
 
 class PluginLoader:
     path: str
@@ -61,7 +61,7 @@ class PluginLoader:
             clazz = getattr(module, "Plugin")
             inst = clazz()
 
-            EventManager.register(inst)
+            ReformerEvents.register(inst)
 
     def getManifest(self) -> PluginManifest:
         with open(self.path + "/reformer.jsonc") as f:

@@ -3,7 +3,7 @@ import random
 import os
 
 from ....resources import ResourceManager
-from ....util.event import EventManager
+from ....events import ReformerEvents
 
 from ....lib.TextUtil import TextUtil
 
@@ -316,7 +316,7 @@ class NewProjectScreen(Screen):
                   = event._GeneratorsEvent__generators  # type: ignore
                                                         # retardedahh no support in vs code
 
-        EventManager.fire(event)
+        ReformerEvents.fire(event)
 
         for gen in generators:
             el.addREWidget(NewProjectScreen.GeneratorButton \

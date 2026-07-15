@@ -12,34 +12,29 @@ class IEventManager(Protocol):
     ## REGISTRATION ##
     ##################
 
-    @classmethod
     @overload
-    def register(cls, /, target: Callable[[T], None]) -> None:
+    def register(self, /, target: Callable[[T], None]) -> None:
         ...
 
-    @classmethod
     @overload
-    def register(cls, /, target: object) -> None:
+    def register(self, /, target: object) -> None:
         ...
 
     ####################
     ## UNREGISTRATION ##
     ####################
 
-    @classmethod
     @overload
-    def unregister(cls, /, target: Callable[[T], None]) -> None:
+    def unregister(self, /, target: Callable[[T], None]) -> None:
         ...
 
-    @classmethod
     @overload
-    def unregister(cls, /, target: object) -> None:
+    def unregister(self, /, target: object) -> None:
         ...
 
     ##############
     ## INTERNAL ##
     ##############
 
-    @classmethod
-    def _getEvent(cls, method: Callable[[T], None]) -> type[T]:
+    def _getEvent(self, method: Callable[[T], None]) -> type[T]:
         ...

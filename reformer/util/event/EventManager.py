@@ -18,19 +18,22 @@ class EventManager(
         EMRegistration, EMUnregistration,
         IEventManager
 ):
-    _listeners: ListenerList = {}  # type: ignore
+    _listeners: ListenerList
 
-    @classmethod
-    def fire(cls, event: T) -> None:  # type: ignore
-        if type(event) in cls._listeners:
+    def __init__(self):
+        super().__init__()
+
+        self._listeners = {}  # type: ignore
+
+    def fire(self, event: T) -> None:  # type: ignore
+        if type(event) in self._listeners:
             listeners: list[Callable[[T], None]] \
-                     = cls._listeners[type(event)]  # type: ignore
+                     = self._listeners[type(event)]  # type: ignore
 
             for method in listeners:
                 method(event)
 
-    @classmethod
-    def _getEvent(cls, method: Callable[[T], None]) -> type[T]:
+    def _getEvent(self, method: Callable[[T], None]) -> type[T]:
         args = method.__annotations__
         for arg in args:
             if issubclass(value := args[arg], Event):
