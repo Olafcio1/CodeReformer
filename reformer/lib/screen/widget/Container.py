@@ -249,6 +249,9 @@ class Container(
     ## CHILDREN ##
     ##############
 
+    def index(self, child: IWidget) -> int:
+        return self._widgets.index(child)
+
     def child(self, index: int) -> IWidget:
         return self._widgets[index]
 
