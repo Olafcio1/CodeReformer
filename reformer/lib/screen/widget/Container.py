@@ -230,6 +230,22 @@ class Container(
 
         self._widgets.insert(self._widgets.index(before), widget)
 
+    #####################
+    ## WIDGETS\REPLACE ##
+    #####################
+
+    @final
+    def replaceChild(self, widget: IWidget, newWidget: IWidget) -> None:
+        self._renderables[self._renderables.index(widget)] = newWidget
+        self._attachers[self._attachers.index(widget)] = newWidget
+
+        self._widgets[self._widgets.index(widget)] = newWidget
+
+        widget._Parented__self_parent = None
+
+        newWidget._Parented__self_parent = self
+        newWidget.onAttached()
+
     ####################
     ## WIDGETS\REMOVE ##
     ####################
