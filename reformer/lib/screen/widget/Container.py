@@ -58,39 +58,66 @@ class Container(
         ...
 
     @overload
+    def __init__(self, *, x: int = 0, y: int = 0, width: int, height: int):
+        ...
+
+    @overload
     def __init__(self):
         ...
 
-    def __init__(self, *params):
+    def __init__(self, *params, **kwparams):
         Initializable.__init__(self)
         Hoverable.__init__(self)
         Styleable.__init__(self)
         Parented.__init__(self)
 
-        if len(params) == 4:
-            x, y, width, height = params
+        if len(params) == 0 and len(kwparams) == 0:
+            # Container()
 
-            self.x = x
-            self.y = y
-
-            self.width = width
-            self.height = height
-        elif len(params) == 2:
-            width, height = params
-
-            self.x = 0
-            self.y = 0
-
-            self.width = width
-            self.height = height
-        elif len(params) == 0:
             self.x = 0
             self.y = 0
 
             self.width = pygame.display.get_surface().get_width()
             self.height = pygame.display.get_surface().get_height()
+
+        elif len(kwparams) == 0:
+            if len(params) == 4:
+                # Container(x, y, width, height, /)
+
+                x, y, width, height = params
+
+                self.x = x
+                self.y = y
+
+                self.width = width
+                self.height = height
+
+            elif len(params) == 2:
+                # Container(width, height, /)
+
+                width, height = params
+
+                self.x = 0
+                self.y = 0
+
+                self.width = width
+                self.height = height
+
+            else:
+                raise Exception("No matching overload")
         else:
-            raise Exception("No matching overload")
+            self.x = kwparams.get('x', 0)
+            self.y = kwparams.get('y', 0)
+
+            try:
+                self.width  = kwparams['width']
+                self.height = kwparams['height']
+            except KeyError:
+                raise Exception("No matching overload")
+
+            for key in params:
+                if key not in ('x', 'y', 'width', 'height'):
+                    raise Exception("No matching overload")
 
         self._renderables = []
         self._attachers = []
