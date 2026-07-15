@@ -219,6 +219,16 @@ class Container(
         for widget in self._attachers:
             widget.keyReleased(key, unicode)
 
+    ########################
+    ## WIDGETS (INTERNAL) ##
+    ########################
+
+    def __prepareChild(self, widget: IWidget) -> None:
+        if widget._Parented__self_parent is not None:
+            widget.remove()
+
+        widget._Parented__self_parent = self  # type: ignore
+
     #############
     ## WIDGETS ##
     #############
@@ -232,7 +242,7 @@ class Container(
 
     @final
     def addREWidget(self, widget: IWidget) -> None:
-        widget._Parented__self_parent = self  # type: ignore
+        self.__prepareChild(widget)
 
         self.addRenderable(widget)
         self.addAttacher(widget)
@@ -252,7 +262,7 @@ class Container(
 
     @final
     def insert(self, widget: IWidget, index: int) -> None:
-        widget._Parented__self_parent = self  # type: ignore
+        self.__prepareChild(widget)
 
         before = self._widgets[index]
 
@@ -263,7 +273,7 @@ class Container(
 
     @final
     def insertBefore(self, widget: IWidget, before: IWidget) -> None:
-        widget._Parented__self_parent = self  # type: ignore
+        self.__prepareChild(widget)
 
         self.insertRenderable(widget, self._renderables.index(before))
         self.insertAttacher(widget, self._attachers.index(before))
@@ -283,7 +293,7 @@ class Container(
 
         widget._Parented__self_parent = None
 
-        newWidget._Parented__self_parent = self
+        self.__prepareChild(newWidget)
         newWidget.onAttached()
 
     ####################
