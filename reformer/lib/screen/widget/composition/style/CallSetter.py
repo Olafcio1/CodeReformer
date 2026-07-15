@@ -1,5 +1,5 @@
 from abc import ABCMeta
-from typing import Protocol, Generic
+from typing import Protocol, Generic, Any, overload
 
 from ..Backable import T
 
@@ -7,25 +7,43 @@ class IBackable(Protocol[T]):
     back: T
 
 class CallSetter(Generic[T], IBackable[T], metaclass=ABCMeta):
-    def __call__(self, code: str) -> T:
-        lines = code.splitlines()
-        for line in lines:
-            line = line.lstrip()
-            if line == "":
-                continue
+    @overload
+    def __call__(self, code: str, /) -> T:
+        ...
 
-            key, _, value = line.partition(": ")
+    @overload
+    def __call__(self, **properties: Any) -> T:
+        ...
 
-            key = key.strip()
-            value = value.strip()
+    def __call__(self, *args: Any, **kwargs: Any) -> T:
+        if len(args) == 1 and len(kwargs) == 0:
+            code = args[0]
+            lines = code.splitlines()
 
-            key = self.__keyTransformation(key)
+            for line in lines:
+                line = line.lstrip()
+                if line == "":
+                    continue
 
-            if key.startswith("_") or \
-               not hasattr(self, key):
-                raise Exception("Tried to assign unexistent key %r" % key)
+                key, _, value = line.partition(": ")
 
-            getattr(self, key)(eval(value, {}, {}))
+                key = key.strip()
+                value = value.strip()
+
+                key = self.__keyTransformation(key)
+
+                if key.startswith("_") or \
+                   not hasattr(self, key):
+                    raise Exception("Tried to assign unexistent key %r" % key)
+
+                getattr(self, key)(eval(value, {}, {}))
+        elif len(args) == 0 and len(kwargs) >= 1:
+            for key in kwargs:
+                value = kwargs[key]
+
+                getattr(self, key)(value)
+        else:
+            raise Exception("No matching overload")
 
         return self.back
 
