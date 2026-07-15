@@ -152,9 +152,11 @@ class HomeScreen(Screen):
 
             projEl.style.display("flex")
             projEl.style.gap(8)
-            projEl.style.background(0x3a3a3a)  # 0x4a4a4a on hover
+            projEl.style.background(0x323232)
             projEl.style.marginRight(36)
             projEl.style.padding((8, 8, 8, 8))
+
+            projEl.style_hover.background(0x3a3a3a)
 
             projEl.text = Text(
                 text  = proj,
