@@ -1,7 +1,7 @@
 from abc import ABCMeta
 from ...iwidget.IWidget import IWidget
 
-class Represented(IWidget, metaclass=ABCMeta):
+class Represented(metaclass=ABCMeta):
     def __str__(self) -> str:
         return type(self).__name__
 

@@ -1,19 +1,13 @@
 import pygame
 
 from .MiniStyle import MiniStyle
-from .....iwidget.IWidget import IWidget
+from ..base.AStyleable import AStyleable
 
 from typing import Self
 
-class MiniStyleable(IWidget):
-    __style: MiniStyle[Self]
-
-    @property
-    def style(self):
-        return self.__style
-
+class MiniStyleable(AStyleable):
     def __init__(self):
-        self.__style = MiniStyle(self)
+        super().__init__(MiniStyle)
 
     ###########
     ## APPLY ##

@@ -1,5 +1,7 @@
 from ..Backable import Backable, T
+
 from .CallSetter import CallSetter
+from .CallLogger import CallLogger
 
 from .key.StPadding import StPadding
 from .key.StDisplay import StDisplay
@@ -16,6 +18,8 @@ class Style(
         CallSetter[T],
         Generic[T],
 
+        CallLogger,
+
         StPadding,
         StDisplay,
         StGap,
@@ -24,4 +28,7 @@ class Style(
         StMargin,
 
         metaclass=ABCMeta
-): pass
+):
+    def __init__(self, arg):
+        Backable.__init__(self, arg)
+        CallLogger.__init__(self)

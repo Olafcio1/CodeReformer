@@ -3,7 +3,7 @@ from typing import overload
 
 from ...iwidget.IWidget import IWidget
 
-class Hoverable(IWidget, metaclass=ABCMeta):
+class Hoverable(metaclass=ABCMeta):
     __hovered: bool
     __usesHover: bool
 

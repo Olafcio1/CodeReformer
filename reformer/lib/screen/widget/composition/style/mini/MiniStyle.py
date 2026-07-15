@@ -1,5 +1,7 @@
 from ...Backable import Backable, T
+
 from ..CallSetter import CallSetter
+from ..CallLogger import CallLogger
 
 from ..key.StBackground import StBackground
 from ..key.StBorder import StBorder
@@ -13,9 +15,14 @@ class MiniStyle(
         CallSetter[T],
         Generic[T],
 
+        CallLogger,
+
         StBackground,
         StBorder,
         StMargin,
 
         metaclass=ABCMeta
-): pass
+):
+    def __init__(self, arg):
+        Backable.__init__(self, arg)
+        CallLogger.__init__(self)

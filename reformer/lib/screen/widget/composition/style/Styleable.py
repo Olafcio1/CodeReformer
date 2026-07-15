@@ -1,21 +1,15 @@
 import pygame
 
 from .Style import Style
+from .base.AStyleable import AStyleable
 
 from ....iwidget.IWidget import IWidget
-from ....iwidget.IContainer import IContainer
 
 from typing import Self
 
-class Styleable(IContainer):
-    __style: Style[Self]
-
-    @property
-    def style(self):
-        return self.__style
-
+class Styleable(AStyleable):
     def __init__(self):
-        self.__style = Style(self)
+        super().__init__(Style)
 
     ###########
     ## APPLY ##

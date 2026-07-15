@@ -5,7 +5,7 @@ from ...UIError import UIError
 
 from abc import ABCMeta
 
-class Clippable(IWidget, metaclass=ABCMeta):
+class Clippable(metaclass=ABCMeta):
     def _clipsub(self, surface: pygame.Surface) -> pygame.Surface:
         try:
             return surface.subsurface(
