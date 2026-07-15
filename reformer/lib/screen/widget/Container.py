@@ -7,6 +7,10 @@ from ..iwidget.IRenderable import IRenderable
 from .Widget import Widget
 from .Initializable import Initializable
 
+from .text.Text import Text
+from .text.TextValue import TextValue
+from .text.TextWidget import TextWidget
+
 from .universal.Parented import Parented
 from .universal.Represented import Represented
 from .universal.Clippable import Clippable
@@ -22,12 +26,6 @@ TextTuple = tuple[
                 pygame.color.Color | tuple[int, int, int] | tuple[int, int, int, int] | int,
                 pygame.font.Font
 ]
-
-class Text(TypedDict):
-    text: str
-    color: int
-    font: pygame.font.Font
-    align: NotRequired[Literal["left"] | Literal["center"]]
 
 TextArgs = TextTuple | tuple[Text]
 TextArg  = TextTuple | Text
@@ -338,8 +336,8 @@ class Container(
     ##########
 
     @property
-    def text(self) -> str:
-        value = ""
+    def text(self) -> TextValue:
+        value = TextValue("", parent=self)
 
         for el in self._widgets:
             value += el.getText()
@@ -348,6 +346,9 @@ class Container(
 
     @text.setter
     def text(self, args: TextArg) -> None:
+        if args == Ellipsis:
+            return
+
         if isinstance(args, tuple):
             value, color, font = args
             align = 'center'
@@ -357,26 +358,6 @@ class Container(
             font  = args['font']
             align = args.get('align', "center")
 
-        class text_widget(Widget):
-            __parent = self
-
-            def __init__(self):
-                size = font.size(value)
-
-                if align == 'center':
-                    x = (self.__parent.width - size[0]) / 2
-                else:
-                    x = 0
-
-                super().__init__(
-                    (int) (x),
-                    (int) ((self.__parent.height - size[1]) / 2),
-                    *size
-                )
-
-            def renderWidget(self, surface: pygame.Surface) -> None:
-                texture = font.render(value, True, color)
-                surface.blit(texture, self.get_rect())
-
         self.clear()
-        self.addREWidget(text_widget())
+        self.addREWidget(TextWidget(value, color, font, align, \
+                                    parent=self))
