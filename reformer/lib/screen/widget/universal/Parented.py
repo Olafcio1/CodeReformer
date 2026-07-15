@@ -1,4 +1,6 @@
 from abc import ABCMeta
+
+from ...iwidget.IWidget import IWidget
 from ...iwidget.IContainer import IContainer
 
 class Parented(metaclass=ABCMeta):
@@ -36,8 +38,11 @@ class Parented(metaclass=ABCMeta):
 
         container = Container(width, height)
 
-        self.parent.replaceChild(self, container)
+        self.replaceWith(container)
 
         container.addREWidget(self)
 
         return container
+
+    def replaceWith(self, widget: IWidget) -> None:
+        self.parent.replaceChild(self, widget)
