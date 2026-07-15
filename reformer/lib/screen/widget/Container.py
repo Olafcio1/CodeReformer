@@ -154,6 +154,8 @@ class Container(
     ###########
 
     def mouseMoved(self, x: int, y: int) -> None:
+        super().mouseMoved(x, y)
+
         for widget in self._attachers:
             widget.mouseMoved(x - self.x, y - self.y)
 
