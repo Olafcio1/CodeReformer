@@ -217,10 +217,10 @@ class HomeScreen(Screen):
 
             iconText += lastUp
 
-            projectDir = projectsDir + "/" + proj + "/.reformer/Project Color"
+            projectDir = projectsDir + "/" + proj
 
             try:
-                with open(projectDir, "r", encoding="utf-8") as f:
+                with open(projectDir + "/.reformer/Project Color", "r", encoding="utf-8") as f:
                     accentColor = f.read()
             except Exception as e:
                 accentColor = "0|0|0.31"
