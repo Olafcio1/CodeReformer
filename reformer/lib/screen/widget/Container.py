@@ -54,6 +54,10 @@ class Container(
         ...
 
     @overload
+    def __init__(self, width: int, height: int, /):
+        ...
+
+    @overload
     def __init__(self):
         ...
 
