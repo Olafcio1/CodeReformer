@@ -18,6 +18,9 @@ class TextValue(str):
     def __init__(self, value: str, /, parent: IContainer):
         ...
 
+    def __add__(self, arg: str) -> "TextValue":
+        return TextValue(super().__add__(arg), parent=self.__parent)
+
     @overload
     def __iadd__(self, args: str) -> "TextValue":
         ...
@@ -28,7 +31,7 @@ class TextValue(str):
 
     def __iadd__(self, args: str | Text) -> "TextValue | Ellipsis":
         if isinstance(args, str):
-            return TextValue(self.__add__(args), parent=self.__parent)
+            return self.__add__(args)
         elif isinstance(args, tuple):
             value, color, font = args
             align = 'center'
