@@ -1,4 +1,5 @@
 import pygame
+import random
 import os
 
 from ....resources import ResourceManager
@@ -263,6 +264,26 @@ class NewProjectScreen(Screen):
                     errorInserted = None
 
                 generator.create(baseDir, SName.value.value)
+
+                if not os.path.isdir(baseDir):
+                    replaceError('silent-fail', "The generator reported no errors, however it didn't create the project directory.")
+                    return
+
+                try:
+                    ideDir = baseDir + "/.reformer"
+                    os.mkdir(ideDir)
+
+                    hue = random.random() * 1.1
+
+                    if hue > 1:
+                        hue %= 1
+
+                    with open(ideDir + "/Project Color", "w", encoding='utf-8') as f:
+                        f.write(str(hue)[:4] + "|0.74|0.31")
+                except:
+                    replaceError('ide-fail', "The generator was succesful, however the IDE failed to create project data.")
+                    return
+
                 StaticRendering.setScreen(ProjectScreen(baseDir))
 
         createBtn.mousePressed = onClick
