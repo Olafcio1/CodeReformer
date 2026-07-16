@@ -175,7 +175,7 @@ class ProjectScreen(Screen):
         def openFolder(self, path: str, file: Container) -> Container:
             padX = 6
 
-            content = Container(file.parent.innerWidth - padX, 16 + 7*2 + ((16 + 7*2 + 7) * (len(os.listdir(path)) - 1)))
+            content = Container(file.parent.innerWidth, 16 + 7*2 + ((16 + 7*2 + 7) * (len(os.listdir(path)) - 1)))
             content.style.paddingLeft(padX)
             content.style.display("grid")
             content.style.gap(7)
