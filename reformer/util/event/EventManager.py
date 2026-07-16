@@ -3,6 +3,7 @@ from typing import TypeVar, Callable, final
 from .manager.ListenerList import ListenerList
 from .manager.IEventManager import IEventManager
 
+from .manager.composite.EMMapped import EMMapped
 from .manager.composite.EMRegistration import EMRegistration
 from .manager.composite.EMUnregistration import EMUnregistration
 
@@ -16,6 +17,7 @@ T = TypeVar('T', bound="Event", covariant=True)
 @final
 class EventManager(
         EMRegistration, EMUnregistration,
+        EMMapped,
         IEventManager
 ):
     _listeners: ListenerList
