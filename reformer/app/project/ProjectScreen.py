@@ -165,10 +165,10 @@ class ProjectScreen(Screen):
 
                 if isdir:
                     # TODO Move this math to a new field, 'Styleable#availableWidth'
-                    file.addREWidget(type(self).FolderArrow.Builder() \
-                                                             .size(file.innerWidth - 7 - file.child(0).width - file.child(1).width, 16) \
-                                                             .kw(right=15, listener=listener)
-                                                           .build())
+                    file.addREWidget(type(cls).FolderArrow.Builder() \
+                                                            .size(file.innerWidth - 7 - file.child(0).width - file.child(1).width, 16) \
+                                                            .kw(right=15, listener=listener)
+                                                          .build())
 
                 self.addREWidget(file)
 
