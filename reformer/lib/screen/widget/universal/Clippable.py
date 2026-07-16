@@ -13,8 +13,8 @@ class Clippable(metaclass=ABCMeta):
                 self.width, self.height
             )
         except ValueError:
-            xOverflow = self.width > surface.get_width()
-            yOverflow = self.height > surface.get_height()
+            xOverflow = self.x + self.width > surface.get_width()
+            yOverflow = self.y + self.height > surface.get_height()
 
             err = UIError("Tried to draw outside of the boundaries; consider expanding the parent %s's %s" % (
                 self.parent,
