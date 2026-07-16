@@ -3,7 +3,6 @@ import math
 import os
 
 from ...lib.screen.Screen import Screen
-from ...lib.screen.widget.Initializable import Initializable
 from ...lib.screen.widget.ClippedWidget import ClippedWidget
 from ...lib.screen.widget.Container import Container, Text
 from ...lib.screen.widget.Widget import Widget
@@ -13,9 +12,8 @@ from ...resources import ResourceManager
 from typing import Callable
 
 class ProjectScreen(Screen):
-    class Background(Initializable):
-        def render(self, surface: pygame.Surface) -> None:
-            super().render(surface)
+    class Background(Widget):
+        def renderWidget(self, surface: pygame.Surface) -> None:
             surface.fill(0x333433)
 
     class Explorer(Container):

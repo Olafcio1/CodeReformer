@@ -11,9 +11,9 @@ from ..project.ProjectScreen import ProjectScreen
 from ...resources import ResourceManager
 
 from ...lib.screen.Screen import Screen
-from ...lib.screen.widget.Initializable import Initializable
 from ...lib.screen.widget.ClippedWidget import ClippedWidget
 from ...lib.screen.widget.Container import Container, Text
+from ...lib.screen.widget.Widget import Widget
 
 from ...lib.static.StaticRendering import StaticRendering
 from ...lib.static.RGB import RGB
@@ -21,10 +21,8 @@ from ...lib.static.RGB import RGB
 from typing import Callable
 
 class HomeScreen(Screen):
-    class Background(Initializable):
-        def render(self, surface: pygame.Surface) -> None:
-            super().render(surface)
-
+    class Background(Widget):
+        def renderWidget(self, surface: pygame.Surface) -> None:
             grad = pygame.Surface((1, 2))
             grad.set_at((0, 0), 0x252625)
             grad.set_at((0, 1), 0x111211)
