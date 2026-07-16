@@ -173,12 +173,13 @@ class ProjectScreen(Screen):
         def openFolder(self, path: str, file: Container) -> Container:
             padX = 6
 
-            content = Container(file.parent.innerWidth, 16 + 7*2 + ((16 + 7*2 + 7) * (len(os.listdir(path)) - 1)))
+            content = Container(file.parent.innerWidth, 0)
             content.style.paddingLeft(padX)
             content.style.display("grid")
             content.style.gap(7)
             content.style.marginTop(2)
             content.style.marginBottom(2)
+            content.layout.dynamicHeight(True)
 
             self.extractFolder(path, content)
 
