@@ -2,6 +2,10 @@ import pygame
 from typing import Protocol
 
 class IRenderable(Protocol):
+    ## LAYOUT ##
+    def lay(self) -> None:
+        ...
+
     ## RENDERING ##
     def render(self, surface: pygame.Surface) -> None:
         ...

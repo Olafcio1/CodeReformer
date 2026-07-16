@@ -3,31 +3,21 @@ from ..Backable import Backable, T
 from ..CallSetter import CallSetter
 from ..CallLogger import CallLogger
 
-from .key import StPadding as keymod
+from .key import StDynamicHeight as keymod
 
-from .key.StPadding import StPadding
-from .key.StDisplay import StDisplay
-from .key.StGap import StGap
-from .key.StBackground import StBackground
-from .key.StBorder import StBorder
-from .key.StMargin import StMargin
+from .key.StDynamicHeight import StDynamicHeight
 
 from abc import ABCMeta
 from typing import Generic
 
-class Style(
+class Layout(
         Backable[T],
         CallSetter[T],
         Generic[T],
 
         CallLogger,
 
-        StPadding,
-        StDisplay,
-        StGap,
-        StBackground,
-        StBorder,
-        StMargin,
+        StDynamicHeight,
 
         metaclass=ABCMeta
 ):

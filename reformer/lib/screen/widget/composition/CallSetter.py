@@ -1,7 +1,7 @@
 from abc import ABCMeta
 from typing import Protocol, Generic, Any, overload
 
-from ..Backable import T
+from .Backable import T
 
 class IBackable(Protocol[T]):
     back: T

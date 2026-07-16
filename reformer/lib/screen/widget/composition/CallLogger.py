@@ -1,14 +1,13 @@
 from abc import ABCMeta
+from types import ModuleType as module
 from typing import Callable, Any
 
-from .key import StBackground
-
 class CallLogger(metaclass=ABCMeta):
+    __mod: module
     __set_properties: set[str]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
+    def __init__(self, mod: module):
+        self.__mod = mod
         self.__set_properties = set()
 
     def isSet(self, prop: str) -> bool:
@@ -21,7 +20,7 @@ class CallLogger(metaclass=ABCMeta):
             return val
 
         if isinstance(val, Callable):
-            if val.__globals__['__spec__'].name.startswith(StBackground.__package__):
+            if val.__globals__['__spec__'].name.startswith(self.__mod.__package__):
                 return lambda *args, **kwargs: self.__wrap(val, args, kwargs)
 
         return val

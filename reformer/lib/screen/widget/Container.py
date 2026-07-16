@@ -20,6 +20,7 @@ from .universal.Clippable import Clippable
 from .universal.Hoverable import Hoverable
 
 from .composition.style.Styleable import Styleable
+from .composition.layout.Layable import Layable
 
 from abc import ABCMeta
 from typing import TypedDict, NotRequired, Literal, Unpack, Final, Self, final, overload
@@ -45,7 +46,8 @@ class MouseDownEvent(Event):
         self.button = button
 
 class Container(
-        Initializable, Styleable,
+        Initializable,
+        Styleable, Layable,
         Clippable, Hoverable,
         Parented, Represented,
         EventManager,
@@ -83,6 +85,7 @@ class Container(
         EventManager.__init__(self)
         Hoverable.__init__(self)
         Styleable.__init__(self)
+        Layable.__init__(self)
         Parented.__init__(self)
 
         if len(params) == 0 and len(kwparams) == 0:
@@ -173,6 +176,11 @@ class Container(
 
     def render(self, surface: pygame.Surface) -> None:
         super().render(surface)
+
+        for widget in self._renderables:
+            widget.lay()
+
+        super().lay()
         super().applyPre(surface)
 
         sub = self._clipsub(surface)

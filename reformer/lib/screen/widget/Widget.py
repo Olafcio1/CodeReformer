@@ -79,6 +79,13 @@ class Widget(
     def get_size(self) -> tuple[int, int]:
         return (self.width, self.height)
 
+    ############
+    ## LAYOUT ##
+    ############
+
+    def lay(self) -> None:
+        pass
+
     ###############
     ## RENDERING ##
     ###############

@@ -1,7 +1,9 @@
 from ...Backable import Backable, T
 
-from ..CallSetter import CallSetter
-from ..CallLogger import CallLogger
+from ...CallSetter import CallSetter
+from ...CallLogger import CallLogger
+
+from ..key import StBackground as keymod
 
 from ..key.StBackground import StBackground
 from ..key.StBorder import StBorder
@@ -25,4 +27,4 @@ class MiniStyle(
 ):
     def __init__(self, arg):
         Backable.__init__(self, arg)
-        CallLogger.__init__(self)
+        CallLogger.__init__(self, keymod)
