@@ -19,6 +19,9 @@ class Parented(metaclass=ABCMeta):
     def before(self, widget: "Parented") -> None:
         self.parent.insertBefore(widget, self)
 
+    def after(self, widget: "Parented") -> None:
+        self.parent.insertAfter(widget, self)
+
     def remove(self) -> None:
         parent = self.parent
 

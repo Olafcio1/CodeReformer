@@ -289,6 +289,10 @@ class Container(
 
         self._widgets.insert(index, widget)
 
+    #########################
+    ## WIDGETS\INSERT-NEAR ##
+    #########################
+
     @final
     def insertBefore(self, widget: IWidget, before: IWidget) -> None:
         self.__prepareChild(widget)
@@ -297,6 +301,15 @@ class Container(
         self.insertAttacher(widget, self._attachers.index(before))
 
         self._widgets.insert(self._widgets.index(before), widget)
+
+    @final
+    def insertAfter(self, widget: IWidget, after: IWidget) -> None:
+        self.__prepareChild(widget)
+
+        self.insertRenderable(widget, self._renderables.index(after)+1)
+        self.insertAttacher(widget, self._attachers.index(after)+1)
+
+        self._widgets.insert(self._widgets.index(after)+1, widget)
 
     #####################
     ## WIDGETS\REPLACE ##
