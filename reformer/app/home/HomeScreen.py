@@ -241,15 +241,15 @@ class HomeScreen(Screen):
                            .style(display = "grid", marginTop = 5)
 
             projEl.mousePressed = self.invoker(
-                lambda projEl, x, y, _: StaticRendering.setScreen(ProjectScreen(projectDir)) if projEl.isHovered() else None,
-                projEl
+                lambda projEl, projectDir, x, y, _: StaticRendering.setScreen(ProjectScreen(projectDir)) if projEl.isHovered() else None,
+                projEl, projectDir
             )
 
             projects.addREWidget(projEl)
 
     @staticmethod
-    def invoker(cb, arg):
-        return lambda *args, **kwargs: cb(arg, *args, **kwargs)
+    def invoker(cb, *default):
+        return lambda *args, **kwargs: cb(*default, *args, **kwargs)
 
     class Actions:
         @classmethod
