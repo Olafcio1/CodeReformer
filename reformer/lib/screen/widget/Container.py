@@ -1,5 +1,8 @@
 import pygame
 
+from ....util.event.Event import Event
+from ....util.event.EventManager import EventManager
+
 from ..iwidget.IWidget import IWidget
 from ..iwidget.IAttacher import IAttacher
 from ..iwidget.IRenderable import IRenderable
@@ -19,7 +22,7 @@ from .universal.Hoverable import Hoverable
 from .composition.style.Styleable import Styleable
 
 from abc import ABCMeta
-from typing import TypedDict, NotRequired, Literal, Unpack, Self, final, overload
+from typing import TypedDict, NotRequired, Literal, Unpack, Final, Self, final, overload
 
 TextTuple = tuple[
                 str,
@@ -30,10 +33,22 @@ TextTuple = tuple[
 TextArgs = TextTuple | tuple[Text]
 TextArg  = TextTuple | Text
 
+@final
+class MouseDownEvent(Event):
+    x: Final[int]
+    y: Final[int]
+    button: Final[int]
+
+    def __init__(self, x: int, y: int, button: int):
+        self.x = x
+        self.y = y
+        self.button = button
+
 class Container(
         Initializable, Styleable,
         Clippable, Hoverable,
         Parented, Represented,
+        EventManager,
         IWidget,
         metaclass=ABCMeta
 ):
@@ -65,6 +80,7 @@ class Container(
 
     def __init__(self, *params, **kwparams):
         Initializable.__init__(self)
+        EventManager.__init__(self)
         Hoverable.__init__(self)
         Styleable.__init__(self)
         Parented.__init__(self)
@@ -122,6 +138,8 @@ class Container(
         self._widgets = []
 
         self._forceRerender = False
+
+        self.map("mousedown", MouseDownEvent)
 
     ##########################
     ## SUB PENDING RENDERER ##
@@ -197,6 +215,8 @@ class Container(
 
     def mousePressed(self, x: int, y: int, button: int) -> None:
         if self.isHovered(x, y):
+            self.fire(MouseDownEvent(x, y, button))
+
             for widget in self._attachers:
                 widget.mousePressed(x - self.x, y - self.y, button)
 
