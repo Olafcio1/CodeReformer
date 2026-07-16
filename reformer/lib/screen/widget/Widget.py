@@ -14,7 +14,7 @@ from .universal.Hoverable import Hoverable
 from ..iwidget.IWidget import IWidget
 
 from abc import ABCMeta, abstractmethod
-from typing import final, Self
+from typing import Self, final, overload
 from threading import Thread
 
 class Widget(
@@ -32,12 +32,32 @@ class Widget(
     width: int
     height: int
 
+    @overload
     def __init__(self, x: int, y: int, width: int, height: int):
-        self.x = x
-        self.y = y
+        ...
 
-        self.width = width
-        self.height = height
+    @overload
+    def __init__(self):
+        """Initializes a widget on X;Y 0,0 with the full screen size."""
+        ...
+
+    def __init__(self, *args):
+        if len(args) == 4:
+            x, y, width, height = args
+
+            self.x = x
+            self.y = y
+
+            self.width = width
+            self.height = height
+        elif len(args) == 0:
+            self.x = 0
+            self.y = 0
+
+            self.width = \
+            self.height = pygame.display.get_window_size()
+        else:
+            raise Exception("No matching overload")
 
         Attacher.__init__(self)
         Parented.__init__(self)
