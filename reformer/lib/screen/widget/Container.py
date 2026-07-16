@@ -215,9 +215,11 @@ class Container(
 
     def mousePressed(self, x: int, y: int, button: int) -> None:
         if self.isHovered(x, y):
+            attachers = [*self._attachers]
+
             self.fire(MouseDownEvent(x, y, button))
 
-            for widget in self._attachers:
+            for widget in attachers:
                 widget.mousePressed(x - self.x, y - self.y, button)
 
     def mouseReleased(self, x: int, y: int, button: int) -> None:
