@@ -4,6 +4,7 @@ import os
 
 from ....resources import ResourceManager
 from ....events import ReformerEvents
+from ....logger import *
 
 from ....lib.TextUtil import TextUtil
 
@@ -263,7 +264,17 @@ class NewProjectScreen(Screen):
                     errorElement.remove()
                     errorInserted = None
 
-                generator.create(baseDir, SName.value.value)
+                try:
+                    generator.create(baseDir, SName.value.value)
+                except Exception as e:
+                    getlogger() << '----------------------'
+                    getlogger() << ':: Generator Error ::'
+                    getlogger() << '----------------------'
+                    getlogger() << str(e)
+                    getlogger() << '----------------------'
+
+                    replaceError('fail', "The generator failed.")
+                    return
 
                 if not os.path.isdir(baseDir):
                     replaceError('silent-fail', "The generator reported no errors, however it didn't create the project directory.")
