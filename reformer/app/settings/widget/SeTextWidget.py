@@ -7,6 +7,8 @@ from ....lib.FigureUtil import FigureUtil
 from ....lib.TextUtil import TextUtil
 
 from ....resources import ResourceManager
+from ....logger import *
+
 from ....util.settings.set_value.StringValue import StringValue
 
 class SeTextWidget(SettingWidget[StringValue]):
@@ -114,7 +116,7 @@ class SeTextWidget(SettingWidget[StringValue]):
 
     def keyPressed(self, key: int, unicode: str) -> None:
         if self.isFocused():
-            print("[TextInput] [Keyboard] %s" % key)
+            getlogger() << ("[Keyboard] %s" % key)
 
             if key == pygame.K_LEFT:
                 if self.__position > 0:

@@ -1,5 +1,7 @@
 from typing import ClassVar, Any
+
 from .resources import ResourceManager
+from .logger import *
 
 class Pack:
     __path: str
@@ -22,7 +24,7 @@ class Pack:
         if self.merged:
             for key in mergedDefaults:
                 if key not in type(self).__annotations__:
-                    print("[Pack/ERROR] Cannot set undefined property %r (from merged defaults)" % key)
+                    getlogger() << ("[Pack/ERROR] Cannot set undefined property %r (from merged defaults)" % key)
                 elif key not in properties:
                     setattr(self, key, mergedDefaults[key])
 
@@ -34,7 +36,7 @@ class Pack:
 
         for key in properties:
             if key not in ("merged", "required", "default", "name", "description"):
-                print("[Pack/ERROR] Cannot set undefined property %r" % key)
+                getlogger() << ("[Pack/ERROR] Cannot set undefined property %r" % key)
 
     name: str
     description: str
