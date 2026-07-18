@@ -1,4 +1,5 @@
 import time
+import inspect
 import colored
 import colorama
 
@@ -16,7 +17,7 @@ class _logger(object):
 		try:
 			raise Exception()
 		except Exception as e:
-			self.__fn = e.__traceback__.tb_frame.f_globals['__spec__'].name
+			self.__fn = inspect.getouterframes(e.__traceback__.tb_frame)[2].frame.f_globals['__spec__'].name
 
 	def __lshift__(self, message: str) -> None:
 		now = time.localtime(time.time())
