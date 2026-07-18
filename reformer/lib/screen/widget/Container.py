@@ -3,6 +3,8 @@ import pygame
 from ....util.event.Event import Event
 from ....util.event.EventManager import EventManager
 
+from ..UIError import UIError
+
 from ..iwidget.IWidget import IWidget
 from ..iwidget.IAttacher import IAttacher
 from ..iwidget.IRenderable import IRenderable
@@ -170,22 +172,39 @@ class Container(
     def refreshTime(self) -> int|None:
         return None
 
+    ############
+    ## LAYOUT ##
+    ############
+
+    __defer: bool = False
+
+    def lay(self) -> None:
+        self.__defer = False
+
+        for widget in self._renderables:
+            widget.lay()
+
+        super().lay()
+
+    def defer(self) -> None:
+        self.__defer = True
+        self.forceRender()
+
     ###############
     ## RENDERING ##
     ###############
 
     def render(self, surface: pygame.Surface) -> None:
         super().render(surface)
-
-        for widget in self._renderables:
-            widget.lay()
-
-        super().lay()
         super().applyPre(surface)
 
         sub = self._clipsub(surface)
         for widget in self._renderables:
             widget.render(sub)
+
+            if self.__defer:
+                self.parent.defer()
+                return
 
         super().applyPost(surface)
 

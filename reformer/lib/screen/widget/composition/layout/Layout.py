@@ -24,3 +24,10 @@ class Layout(
     def __init__(self, arg):
         Backable.__init__(self, arg)
         CallLogger.__init__(self, keymod)
+
+    def _CallLogger__wrap(self, *args, **kwargs):
+        val = super()._CallLogger__wrap(*args, **kwargs)
+
+        self.back.defer()
+
+        return val

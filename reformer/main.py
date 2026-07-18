@@ -34,6 +34,8 @@ class Rendering:
         self.mainloop()
 
     def render(self):
+        self.screen.lay()
+
         if self.screen.pendingRerender():
             self.screen.render(self.surface)
         else:
