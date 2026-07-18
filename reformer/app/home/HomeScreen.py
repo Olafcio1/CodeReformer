@@ -197,24 +197,7 @@ class HomeScreen(Screen):
             #   however, that would require heavy modifications to
             #   the ResourceManager.
 
-            iconText = ""
-
-            for ch in proj:
-                if ch in (string.digits + string.ascii_letters):
-                    iconText += ch
-                    break
-
-            lastUp: str = ""
-
-            for ch in proj:
-                if ch.isupper():
-                    lastUp = ch
-
-            if lastUp in ('', iconText):
-                lastUp = proj[-1]
-
-            iconText += lastUp
-
+            iconText = self.getIconText(proj)
             projectDir = projectsDir + "/" + proj
 
             try:
@@ -244,6 +227,28 @@ class HomeScreen(Screen):
             )
 
             projects.addREWidget(projEl)
+
+    @staticmethod
+    def getIconText(proj: str) -> str:
+        iconText = ""
+
+        for ch in proj:
+            if ch in (string.digits + string.ascii_letters):
+                iconText += ch
+                break
+
+        lastUp: str = ""
+
+        for ch in proj:
+            if ch.isupper():
+                lastUp = ch
+
+        if lastUp in ('', iconText):
+            lastUp = proj[-1]
+
+        iconText += lastUp
+
+        return iconText
 
     @staticmethod
     def invoker(cb, *default):
