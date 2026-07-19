@@ -10,6 +10,7 @@ from .composition.style.mini.MiniStyleable import MiniStyleable
 from .universal.Parented import Parented
 from .universal.Represented import Represented
 from .universal.Hoverable import Hoverable
+from .universal.ForceRenderable import ForceRenderable
 
 from ..iwidget.IWidget import IWidget
 
@@ -21,6 +22,7 @@ class Widget(
         Attacher, Initializable,
         Parented, Represented,
         Hoverable, MiniStyleable,
+        ForceRenderable,
 
         IWidget,
 
@@ -74,6 +76,7 @@ class Widget(
         Hoverable.__init__(self)
         Initializable.__init__(self)
         MiniStyleable.__init__(self)
+        ForceRenderable.__init__(self)
 
     ##################
     ## AUTO REFRESH ##
@@ -139,7 +142,9 @@ class Widget(
     ######################
 
     def pendingRerender(self) -> bool:
-        return super().pendingRerender() or self._interacted()
+        return Initializable  .pendingRerender(self) or \
+               ForceRenderable.pendingRerender(self) or \
+               self._interacted()
 
     def refreshTime(self) -> int|None:
         return None

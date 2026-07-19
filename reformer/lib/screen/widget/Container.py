@@ -20,6 +20,7 @@ from .universal.Parented import Parented
 from .universal.Represented import Represented
 from .universal.Clippable import Clippable
 from .universal.Hoverable import Hoverable
+from .universal.ForceRenderable import ForceRenderable
 
 from .composition.style.Styleable import Styleable
 from .composition.layout.Layable import Layable
@@ -52,6 +53,7 @@ class Container(
         Styleable, Layable,
         Clippable, Hoverable,
         Parented, Represented,
+        ForceRenderable,
         EventManager,
         IWidget,
         metaclass=ABCMeta
@@ -89,6 +91,7 @@ class Container(
         Styleable.__init__(self)
         Layable.__init__(self)
         Parented.__init__(self)
+        ForceRenderable.__init__(self)
 
         if len(params) == 0 and len(kwparams) == 0:
             # Container()
@@ -142,22 +145,17 @@ class Container(
         self._attachers = []
         self._widgets = []
 
-        self._forceRerender = False
-
         self.map("mousedown", MouseDownEvent)
 
     ##########################
     ## SUB PENDING RENDERER ##
     ##########################
 
-    _forceRerender: bool
-
     def pendingRerender(self) -> bool:
-        if self._forceRerender:
-            self._forceRerender = False
-            return True
-
-        if super().pendingRerender():
+        if (
+                ForceRenderable.pendingRerender(self) or
+                Initializable.pendingRerender(self)
+        ):
             return True
 
         for widget in self._renderables:
@@ -165,9 +163,6 @@ class Container(
                 return True
 
         return False
-
-    def forceRender(self) -> None:
-        self._forceRerender = True
 
     def refreshTime(self) -> int|None:
         return None
