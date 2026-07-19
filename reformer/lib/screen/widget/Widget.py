@@ -33,7 +33,11 @@ class Widget(
     height: int
 
     @overload
-    def __init__(self, x: int, y: int, width: int, height: int):
+    def __init__(self, x: int, y: int, width: int, height: int, /):
+        ...
+
+    @overload
+    def __init__(self, *, x: int, y: int, width: int, height: int):
         ...
 
     @overload
@@ -41,8 +45,8 @@ class Widget(
         """Initializes a widget on X;Y 0,0 with the full screen size."""
         ...
 
-    def __init__(self, *args):
-        if len(args) == 4:
+    def __init__(self, *args, **kwargs):
+        if len(args) == 4 and len(kwargs) == 0:
             x, y, width, height = args
 
             self.x = x
@@ -50,7 +54,13 @@ class Widget(
 
             self.width = width
             self.height = height
-        elif len(args) == 0:
+        elif len(kwargs) == 4 and len(args) == 0:
+            self.x = kwargs['x']
+            self.y = kwargs['y']
+
+            self.width = kwargs['width']
+            self.height = kwargs['height']
+        elif len(args) == 0 and len(kwargs) == 0:
             self.x = 0
             self.y = 0
 
