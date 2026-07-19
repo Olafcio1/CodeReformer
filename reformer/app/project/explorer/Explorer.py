@@ -5,8 +5,11 @@ from .icon.FileIcon import FileIcon
 from .icon.FolderIcon import FolderIcon
 from .icon.FolderArrow import FolderArrow
 
+from .FileOpenEvent import FileOpenEvent
+
 from ....lib.screen.widget.Container import Container, Text
 from ....resources import ResourceManager
+from ....common import invoker
 
 from typing import Callable
 
@@ -24,6 +27,7 @@ class Explorer(Container):
         self.style.gap(4)
         self.style.display("grid")
 
+        self.map("fileopen", FileOpenEvent)
         self.extractFolder(self.path, self)
 
     def extractFolder(cls, path: str, self: Container) -> None:
@@ -77,6 +81,11 @@ class Explorer(Container):
                                             .pos(0, 0) \
                                             .size(16, 16) \
                                          .build())
+
+                file.on("mousedown", invoker(
+                    lambda _, event: cls.fire(event),
+                    FileOpenEvent(fp, file)
+                ))
 
             file.text += Text(
                 text  = fn,
