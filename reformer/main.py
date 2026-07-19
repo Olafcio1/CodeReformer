@@ -78,5 +78,8 @@ class Rendering:
                 x, y = event.pos
                 self.screen.mouseMoved(x, y)
                 self.render()
+            elif event.type == pygame.MOUSEWHEEL:
+                self.screen.mouseScroll(event.precise_x, event.precise_y)
+                self.render()
 
 Rendering()

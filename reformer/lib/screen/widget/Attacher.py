@@ -51,6 +51,12 @@ class Attacher(IAttacher, metaclass=ABCMeta):
         if type(self).mouseReleased != Attacher.mouseReleased:
             self.__interacted = True
 
+    def mouseScroll(self, x: float, y: float) -> None:
+        super().mouseScroll(x, y)  # type: ignore
+
+        if type(self).mouseScroll != Attacher.mouseScroll:
+            self.__interacted = True
+
     ##############
     ## KEYBOARD ##
     ##############

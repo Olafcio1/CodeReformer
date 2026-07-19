@@ -21,6 +21,9 @@ class IAttacher(Protocol):
     def mouseReleased(self, x: int, y: int, button: int) -> None:
         ...
 
+    def mouseScroll(self, x: float, y: float) -> None:
+        ...
+
     ##############
     ## KEYBOARD ##
     ##############

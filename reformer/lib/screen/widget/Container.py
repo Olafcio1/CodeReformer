@@ -254,6 +254,11 @@ class Container(
             for widget in self._attachers:
                 widget.mouseReleased(x - self.x, y - self.y, button)
 
+    def mouseScroll(self, x: float, y: float) -> None:
+        if self.isHovered():
+            for widget in self._attachers:
+                widget.mouseScroll(x, y)
+
     ##############
     ## KEYBOARD ##
     ##############
